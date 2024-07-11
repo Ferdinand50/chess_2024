@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <cmath> 
 #include "screen.h"
 #include "gamestate.h"
 
@@ -16,26 +17,27 @@ int main(int argc, char *argv[])
 		cout<<"Error initalising SDL."<<endl;
 		return 1;
 	}
-  
+
+    GameState gamestate;
+
     bool running = true;
     SDL_Event event;
 
     // Draw init board
-    screen.update();
+    screen.update(gamestate.m_chessBoard);
 
-    while (running)
-    {
-        while (SDL_WaitEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
-                running = false;
-                break;
-            }
-        }
+	bool QUIT = false;
+	while (!QUIT) {
 
-        screen.update();
-    }
+		while(SDL_PollEvent(&event)){
+			switch(event.type){
+				case SDL_QUIT:
+					QUIT=true;
+					break;
+			}
+		}
+		SDL_Delay(floor(32.0f));
+	} 
 
     screen.close();
 
