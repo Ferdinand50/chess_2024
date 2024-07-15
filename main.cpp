@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 						// initialize move
 						Move move(gamestate.m_chessBoard, moveCoord);
 						//Currently buggy
-						makeMove(&gamestate.m_chessBoard, move);
+						makeMove(gamestate.m_chessBoard, move);
 						std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<std::endl;
 
 						//update screen

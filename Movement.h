@@ -38,7 +38,7 @@ public:
 };
 
 
-void makeMove(int (*chessBoard)[8][8], Move move);
+void makeMove(int (&chessBoard)[8][8], Move move);
 
 //int return_piece_type(int MoveSelected[2], unsigned long long bitboard[12]);
 

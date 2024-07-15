@@ -2,15 +2,13 @@
 
 
 //TODO: use reference
-void makeMove(int (*chessBoard)[8][8], Move move)
+void makeMove(int (&chessBoard)[8][8], Move move)
 {
-    // //move piece to new square
-
-
     //remove piece of start square
-    (*chessBoard)[move.m_start_x][move.m_start_y] = 0;
+    chessBoard[move.m_start_x][move.m_start_y] = 0;
 
-
+    // //move piece to new square
+    chessBoard[move.m_end_x][move.m_end_y] = move.m_pieceMoved;
 }
 
 
