@@ -44,15 +44,15 @@ int main(int argc, char *argv[])
 					row = mx/square;
 					columm = my/square;
 					if(StartMove){
-						moveCoord.xStart = row;
-						moveCoord.yStart = columm;
+						moveCoord.xStart = columm;
+						moveCoord.yStart = row;
 						StartMove = false;
 						EndMove = true;
 						//screen.draw_hightlight(gamestate.m_bitboards);
 					}
 					else{
-						moveCoord.xEnd = row;
-						moveCoord.yEnd = columm;
+						moveCoord.xEnd = columm;
+						moveCoord.yEnd = row;
 						StartMove = true;
 						EndMove = false;
 

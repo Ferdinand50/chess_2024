@@ -8,7 +8,7 @@ void makeMove(int (*chessBoard)[8][8], Move move)
 
 
     //remove piece of start square
-    *chessBoard[move.m_start_x][move.m_start_y] = 0;
+    (*chessBoard)[move.m_start_x][move.m_start_y] = 0;
 
 
 }
