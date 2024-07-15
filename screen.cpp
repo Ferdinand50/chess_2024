@@ -1,6 +1,6 @@
 #include "screen.h"
 #include <iostream>
-#include "Gamestate.h"
+#include "gamestate.h"
 #include <map>
 
 
