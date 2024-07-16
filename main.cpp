@@ -44,26 +44,34 @@ int main(int argc, char *argv[])
 					row = mx/square;
 					columm = my/square;
 					if(StartMove){
-						moveCoord.xStart = columm;
-						moveCoord.yStart = row;
-						StartMove = false;
-						EndMove = true;
-						//screen.draw_hightlight(gamestate.m_bitboards);
+						//only accept move is valid piece is selected
+						if(gamestate.isPieceTurn(columm, row)){
+							moveCoord.xStart = columm;
+							moveCoord.yStart = row;
+							StartMove = false;
+							EndMove = true;
+							//TODO: implement a draw highlight function
+							}
 					}
 					else{
-						moveCoord.xEnd = columm;
-						moveCoord.yEnd = row;
-						StartMove = true;
-						EndMove = false;
+						//dont accept same start and end square
+						if(moveCoord.xStart !=columm || moveCoord.yStart!=row){
+							moveCoord.xEnd = columm;
+							moveCoord.yEnd = row;
+							StartMove = true;
+							EndMove = false;
 
-						// initialize move
-						Move move(gamestate.m_chessBoard, moveCoord);
-						//Currently buggy
-						makeMove(gamestate.m_chessBoard, move);
-						std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<std::endl;
+							// initialize move
+							Move move(gamestate.m_chessBoard, moveCoord);
+							//Currently buggy
+							makeMove(gamestate.m_chessBoard, move);
+							//TODO: move this change of turn in the makeMove function
+							gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
+							std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
 
-						//update screen
-						 screen.update(gamestate.m_chessBoard);
+							//update screen
+							screen.update(gamestate.m_chessBoard);
+						}
 					}
 			}
 		}

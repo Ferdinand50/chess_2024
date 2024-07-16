@@ -4,7 +4,8 @@
 #include <string>
 
 
-class GameState {
+class GameState 
+{
 private:
     // Constants for piece types
     const int EMPTY = 0;
@@ -22,7 +23,7 @@ private:
     const int WHITE_KING = 26;
 
 public:
-    //TO DO: make this as a pointer or use a reference
+    bool m_whitesTurn;
     int m_chessBoard[8][8] = {
         {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK},
         {BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN},
@@ -37,6 +38,8 @@ public:
 public:
     // Constructor
     GameState();
+    //returns True if there is a piece on the square and its turn
+    bool isPieceTurn(int columm, int row);
 
 
 };
