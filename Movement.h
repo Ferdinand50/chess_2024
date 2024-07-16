@@ -4,11 +4,12 @@
 #include <iostream>
 #include <string.h>
 #include "gamestate.h"
+#include <vector>
 
 using namespace std;
 
-struct MoveCoord
-{
+
+struct MoveCoord{
     int xStart;
     int yStart;
     int xEnd;
@@ -16,8 +17,7 @@ struct MoveCoord
 };
 
 
-class Move
-{
+class Move{
 public:
     int m_pieceMoved;
     int m_pieceTaken;
@@ -37,10 +37,13 @@ public:
     void close();
 };
 
-
+//makes a move
 void makeMove(int (&chessBoard)[8][8], Move move);
+//gets the valid moves for the current gamestate
+//TODO: use complete gamestate object and not only the board
+void getLegalMoves(std::vector<Move> &legalMoves, int (&chessBoard)[8][8]);
 
-//int return_piece_type(int MoveSelected[2], unsigned long long bitboard[12]);
+
 
 
 

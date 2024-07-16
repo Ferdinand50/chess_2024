@@ -2,7 +2,17 @@
 #define GAMESTATE_H
 
 #include <string>
+#include <vector>
+#include <iostream>
+#include "Movement.h"
 
+//used to keep track of the pieces on the board in an efficent way
+struct PieceInfo{
+    int columm; //x
+    int row; //y
+    int type; //type of pieces in int
+
+};
 
 class GameState 
 {
@@ -24,6 +34,10 @@ private:
 
 public:
     bool m_whitesTurn;
+    //keeps track of the active pieces for a faster way of itterating over the board
+    std::vector<PieceInfo> m_whitePieces;
+    std::vector<PieceInfo> m_blackPieces;
+    //8x8 chess board
     int m_chessBoard[8][8] = {
         {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK},
         {BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN},

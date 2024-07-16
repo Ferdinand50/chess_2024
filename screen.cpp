@@ -68,10 +68,8 @@ bool Screen::init(){
 void Screen::draw_board(){
     SDL_Rect rect;
     bool toggle_color = 0;
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
+    for (int i = 0; i < 8; i++){
+        for (int j = 0; j < 8; j++){
             rect.x = j * SCREEN_WIDTH/8;
             rect.y = i * SCREEN_WIDTH/8;
             rect.w = SCREEN_WIDTH/8;

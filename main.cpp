@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <cmath> 
+#include <vector>
 #include "screen.h"
 #include "gamestate.h"
 #include "Movement.h"
@@ -26,6 +27,8 @@ int main(int argc, char *argv[])
 	int row;
 	int columm;
 	MoveCoord moveCoord;
+
+	std::vector<Move> legalMoves;
 
     // Draw init board
     screen.update(gamestate.m_chessBoard);
