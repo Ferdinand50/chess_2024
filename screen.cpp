@@ -96,7 +96,6 @@ void Screen::draw_pieces(int board[8][8]){
     //iterate over board
     for(int rank=0; rank<8;rank++){
         for(int file=0; file<8;file++){
-            int square=rank*8 +file;
             if(board[rank][file] != 0)
                 {
                 rect.x = file*SCREEN_WIDTH/8;

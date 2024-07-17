@@ -9,15 +9,31 @@ void makeMove(int (&chessBoard)[8][8], Move move){
     // //move piece to new square
     chessBoard[move.m_end_x][move.m_end_y] = move.m_pieceMoved;
 
-    //TODO: update list of pieces
+    
 }
 
-void getLegalMoves(std::vector<Move> &legalMoves, int (&chessBoard)[8][8]){
+void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
     // Clear the elements of legalMoves vector
     legalMoves.clear();
+
+    for (int row = 0; row < 8; ++row){
+        for (int columm = 0; columm < 8; ++columm){
+            //whites turn and piece is white
+            if(gamestate.m_chessBoard[columm][row]>20 && gamestate.m_whitesTurn){
+                if(gamestate.m_chessBoard[columm][row] == 21)
+                    getPawnMoves(legalMoves, gamestate, columm, row);
+                }
+            //blacks turn and piece is black
+            else if(gamestate.m_chessBoard[columm][row] > 0 && gamestate.m_chessBoard[columm][row] < 20 && !gamestate.m_whitesTurn){
+                }
+        }    
+    } 
 }
 
 
+void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int columm, int row){
+    //TODO: make this function
+}
 
 
 // Move class 

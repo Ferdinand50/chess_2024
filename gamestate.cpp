@@ -3,7 +3,8 @@
 
 // Constructor implementation
 GameState::GameState(): m_whitesTurn(true){
-    // Iterate over the board to initialize list of pieces
+    //TODO: use this to keep track of pieces
+    // Iterate over the board to initialize list of pieces currently no use
     for (int row = 0; row < 8; ++row){
         for (int columm = 0; columm < 8; ++columm){
             int piece = m_chessBoard[row][columm];
