@@ -36,6 +36,8 @@ private:
 public:
     //TODO: Use reference
     Move(int const chessBoard[8][8], MoveCoord moveCoord);
+    //check if move is in legalMoves
+    bool isLegal(std::vector<Move> const &legalMoves);
     void close();
 };
 
@@ -45,7 +47,7 @@ void makeMove(int (&chessBoard)[8][8], Move move);
 //TODO: use complete gamestate object and not only the board
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
 //Get moves of pawns
-void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int columm, int row);
+void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 
 
 

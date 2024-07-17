@@ -24,11 +24,12 @@ int main(int argc, char *argv[])
 	int mx;
 	int my;
 	int square = screen.SCREEN_WIDTH/8;
-	int row;
-	int columm;
+	int xC;
+	int yC;
 	MoveCoord moveCoord;
 
 	std::vector<Move> legalMoves;
+	getLegalMoves(legalMoves, gamestate);
 
     // Draw init board
     screen.update(gamestate.m_chessBoard);
@@ -44,13 +45,13 @@ int main(int argc, char *argv[])
 				//move pieves via mouse clicks
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&mx,&my);
-					row = mx/square;
-					columm = my/square;
+					xC = mx/square;
+					yC = my/square;
 					if(StartMove){
 						//only accept move is valid piece is selected
-						if(gamestate.isPieceTurn(columm, row)){
-							moveCoord.xStart = columm;
-							moveCoord.yStart = row;
+						if(gamestate.isPieceTurn(xC, yC)){
+							moveCoord.xStart = xC;
+							moveCoord.yStart = yC;
 							StartMove = false;
 							EndMove = true;
 							//TODO: implement a draw highlight function
@@ -58,14 +59,18 @@ int main(int argc, char *argv[])
 					}
 					else{
 						//dont accept same start and end square
-						if(moveCoord.xStart !=columm || moveCoord.yStart!=row){
-							moveCoord.xEnd = columm;
-							moveCoord.yEnd = row;
+						//TODO: dont accept same color insted 
+						if(moveCoord.xStart !=xC || moveCoord.yStart!=yC){
+							moveCoord.xEnd = xC;
+							moveCoord.yEnd = yC;
 							StartMove = true;
 							EndMove = false;
 
 							// initialize move
 							Move move(gamestate.m_chessBoard, moveCoord);
+							if(move.isLegal(legalMoves)){
+								std::cout<<"Move is legal"<<std::endl;
+							}
 							//Currently buggy
 							makeMove(gamestate.m_chessBoard, move);
 							//TODO: move this change of turn in the makeMove function
@@ -74,6 +79,9 @@ int main(int argc, char *argv[])
 
 							//update screen
 							screen.update(gamestate.m_chessBoard);
+
+							//get legal moves
+							getLegalMoves(legalMoves, gamestate);
 						}
 					}
 			}
