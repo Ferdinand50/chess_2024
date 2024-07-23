@@ -44,7 +44,6 @@ public:
 //makes a move
 void makeMove(int (&chessBoard)[8][8], Move move);
 //gets the valid moves for the current gamestate
-//TODO: use complete gamestate object and not only the board
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
 //Get moves of pawns
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);

@@ -24,7 +24,7 @@ GameState::GameState(): m_whitesTurn(true){
 
 
 
-bool GameState::isPieceTurn(int x, int y){
+bool GameState::isPieceTurn(int x, int y) const{
     //whites turn and piece is white
     if(m_chessBoard[y][x]>20 && m_whitesTurn){
         return true;

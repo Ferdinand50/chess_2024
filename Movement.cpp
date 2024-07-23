@@ -25,40 +25,66 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                 }
             //blacks turn and piece is black
             else if(gamestate.m_chessBoard[y][x] > 0 && gamestate.m_chessBoard[y][x] < 20 && !gamestate.m_whitesTurn){
+                if(gamestate.m_chessBoard[y][x] == 11)
+                    getPawnMoves(legalMoves, gamestate, x, y);
                 }
         }    
     } 
 }
 
 
-void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y){
-    //TODO: white and black pawn
-    // use offsett variable
-    // only till 0 (inside the board)
 
-    //TODO: this will fail if x or y is out of the board
+void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y){
+    //TODO: optimize this function
+    //direction, homeSquare, moveCoord can be init in advance
+
+    //direction changes depending on the color
+    int direction;
+    int homeSquare;
+    if(gamestate.m_whitesTurn){
+        direction = -1;
+        homeSquare = 6;
+    } else {
+        direction = 1;
+        homeSquare = 1;
+    }
 
     //This can be init in the getlegalMoves function
     MoveCoord moveCoord;
     moveCoord.xStart = x;
 	moveCoord.yStart = y;
 
-    //front square is empty 
-    if(gamestate.m_chessBoard[y-1][x]==0){
+    //check if piece still can move to the front square and if it is empty 
+    if(!(y== 7 || y==0) && gamestate.m_chessBoard[y+direction][x]==0){
         moveCoord.xEnd = x;
-        moveCoord.yEnd = y - 1;
+        moveCoord.yEnd = y + direction;
         Move move(gamestate.m_chessBoard, moveCoord);
         legalMoves.push_back(move);
     }
 
     //front 2x square is empty and starting pawn pose
-    if(y == 6 && gamestate.m_chessBoard[y-2][x]==0 ){
+    if(y == homeSquare && gamestate.m_chessBoard[y+direction*2][x]==0 ){
         moveCoord.xEnd = x;
-        moveCoord.yEnd = y - 2;
+        moveCoord.yEnd = y + direction*2;
         Move move(gamestate.m_chessBoard, moveCoord);
         legalMoves.push_back(move);
     }
 
+    //check if there is an attack square and if there is an enemey piece on it (right)
+    if(!(y== 7 || y==0) && x!=7 && gamestate.m_chessBoard[x+1][y+direction] != 0 && !gamestate.isPieceTurn(x+1,y+direction)){
+        moveCoord.xEnd = x + 1;
+        moveCoord.yEnd = y + direction;
+        Move move(gamestate.m_chessBoard, moveCoord);
+        legalMoves.push_back(move);
+    }
+
+    //check if there is an attack square and if there is an enemey piece on it (left)
+    if(!(y== 7 || y==0) && x!=0 && gamestate.m_chessBoard[x-1][y+direction] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
+        moveCoord.xEnd = x - 1;
+        moveCoord.yEnd = y + direction;
+        Move move(gamestate.m_chessBoard, moveCoord);
+        legalMoves.push_back(move);
+    }
 }
 
 

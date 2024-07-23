@@ -53,7 +53,7 @@ public:
     // Constructor
     GameState();
     //returns True if there is a piece on the square and its turn
-    bool isPieceTurn(int x, int y);
+    bool isPieceTurn(int x, int y) const;
 
 
 };
