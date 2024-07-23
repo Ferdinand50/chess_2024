@@ -1,4 +1,5 @@
 #include "gamestate.h"
+<<<<<<< HEAD
 
 
 // Constructor implementation
@@ -37,3 +38,10 @@ bool GameState::isPieceTurn(int x, int y) const{
         return false;
     }
 }
+=======
+#include <iostream>
+
+// Constructor implementation
+GameState::GameState(){}
+
+>>>>>>> 6083e5b (Initial commit)
