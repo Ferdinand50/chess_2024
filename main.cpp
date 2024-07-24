@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 							StartMove = false;
 							EndMove = true;
 							//TODO: implement a draw highlight function
+							screen.drawHighlights();
 							}
 					}
 					else{
@@ -78,6 +79,7 @@ int main(int argc, char *argv[])
 							std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
 
 							//update screen
+							//TODO: unify drawHighlights and update once a timestep
 							screen.update(gamestate.m_chessBoard);
 
 							//get legal moves
@@ -86,8 +88,9 @@ int main(int argc, char *argv[])
 					}
 			}
 		}
-		SDL_Delay(floor(32.0f));
+		SDL_Delay(floor(2.0f));
 	} 
+	//TODO: Fix segmentation fault while closing
     screen.close();
 
     return 0;

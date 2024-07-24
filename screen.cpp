@@ -67,13 +67,13 @@ bool Screen::init(){
 
 void Screen::draw_board(){
     SDL_Rect rect;
+    rect.w = SCREEN_WIDTH/8;
+    rect.h = SCREEN_WIDTH/8;
     bool toggle_color = 0;
     for (int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
             rect.x = j * SCREEN_WIDTH/8;
             rect.y = i * SCREEN_WIDTH/8;
-            rect.w = SCREEN_WIDTH/8;
-            rect.h = SCREEN_WIDTH/8;
             if (toggle_color)
                 SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
             else
@@ -105,6 +105,21 @@ void Screen::draw_pieces(int board[8][8]){
                 }
         }    
     } 
+}
+
+void Screen::drawHighlights(){
+    SDL_Rect rect;
+
+    rect.x = 3 * SCREEN_WIDTH/8;
+    rect.y = 3 * SCREEN_WIDTH/8;
+    rect.w = SCREEN_WIDTH/8;
+    rect.h = SCREEN_WIDTH/8;
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
+    SDL_RenderFillRect(m_renderer, &rect);
+
+    //TODO: remove this
+    SDL_RenderPresent(m_renderer);
+
 }
 
 

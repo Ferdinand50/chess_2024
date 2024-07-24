@@ -33,6 +33,7 @@ public:
     bool init();
     void update(int board[8][8]);
     void draw_board();
+    void drawHighlights();
     void draw_pieces(int board[8][8]);
     // bool processEvents();
     void close();
