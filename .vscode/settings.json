@@ -52,7 +52,6 @@
         "text_encoding": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-<<<<<<< HEAD
         "variant": "cpp",
         "ios": "cpp",
         "map": "cpp",
@@ -68,8 +67,5 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"
-=======
-        "variant": "cpp"
->>>>>>> 6083e5b (Initial commit)
     }
 }
