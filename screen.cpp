@@ -1,7 +1,4 @@
 #include "screen.h"
-#include <iostream>
-#include "gamestate.h"
-#include <map>
 
 
 Screen::Screen() :
@@ -44,6 +41,8 @@ bool Screen::init(){
 		return false;
 	}
 
+    //enables transparency for drawHighlights
+    SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 
     //load Images
     m_images[0] = IMG_Load("src/images/bR.png");
@@ -107,19 +106,22 @@ void Screen::draw_pieces(int board[8][8]){
     } 
 }
 
-void Screen::drawHighlights(){
+void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y){
     SDL_Rect rect;
-
-    rect.x = 3 * SCREEN_WIDTH/8;
-    rect.y = 3 * SCREEN_WIDTH/8;
     rect.w = SCREEN_WIDTH/8;
     rect.h = SCREEN_WIDTH/8;
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 255);
-    SDL_RenderFillRect(m_renderer, &rect);
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 128);
 
+    for (const Move &move : legalMoves) {
+        if(move.m_start_x == x && move.m_start_y == y){
+            rect.x = move.m_end_x * SCREEN_WIDTH/8;
+            rect.y = move.m_end_y * SCREEN_WIDTH/8;
+            SDL_RenderFillRect(m_renderer, &rect);
+        }
+    }
+    
     //TODO: remove this
     SDL_RenderPresent(m_renderer);
-
 }
 
 

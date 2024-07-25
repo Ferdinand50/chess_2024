@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 							StartMove = false;
 							EndMove = true;
 							//TODO: implement a draw highlight function
-							screen.drawHighlights();
+							screen.drawHighlights(legalMoves, xC, yC);
 							}
 					}
 					else{

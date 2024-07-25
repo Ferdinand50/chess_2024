@@ -3,8 +3,12 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
 #include <unordered_map>
+#include <iostream>
+#include "Movement.h"
+#include "gamestate.h"
+#include <map>
+
 
 using namespace std;
 
@@ -33,7 +37,7 @@ public:
     bool init();
     void update(int board[8][8]);
     void draw_board();
-    void drawHighlights();
+    void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
     void draw_pieces(int board[8][8]);
     // bool processEvents();
     void close();
