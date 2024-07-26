@@ -1,15 +1,26 @@
 #include "Movement.h"
 
 
-
-void makeMove(int (&chessBoard)[8][8], Move move){
+void makeMove(GameState &gamestate, Move move){
     //remove piece of start square
-    chessBoard[move.m_start_y][move.m_start_x] = 0;
+    gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = 0;
+    //move piece to new square
+    gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceMoved;
+    //log selected move
+    gamestate.moveLog.push(move);
+}
 
-    // //move piece to new square
-    chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceMoved;
+void undoMove(GameState &gamestate){
+    //check if log is not empty
+    if (!gamestate.moveLog.empty()) {
+        Move move = gamestate.moveLog.top();
+        gamestate.moveLog.pop();
 
-    
+        gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = move.m_pieceMoved;
+        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceTaken;
+    } else {
+        std::cout<<"No move to undo"<<std::endl;
+    }
 }
 
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){

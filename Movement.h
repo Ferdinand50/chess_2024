@@ -42,7 +42,9 @@ public:
 };
 
 //makes a move
-void makeMove(int (&chessBoard)[8][8], Move move);
+void makeMove(GameState &gamestate, Move move);
+//undoes the lastest move
+void undoMove(GameState &gamestate);
 //gets the valid moves for the current gamestate
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
 //get moves of pawns

@@ -5,6 +5,10 @@
 #include <vector>
 #include <iostream>
 #include "Movement.h"
+#include <stack>
+
+//forward declaration
+class Move;
 
 //used to keep track of the pieces on the board in an efficent way
 struct PieceInfo{
@@ -34,7 +38,10 @@ private:
 
 public:
     bool m_whitesTurn;
+    //logger for undoing moves
+    std::stack<Move> moveLog;
     //keeps track of the active pieces for a faster way of itterating over the board
+    //TODO: remove this or support full implementation
     std::vector<PieceInfo> m_whitePieces;
     std::vector<PieceInfo> m_blackPieces;
     //8x8 chess board

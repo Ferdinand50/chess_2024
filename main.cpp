@@ -9,6 +9,8 @@
 
 int main(int argc, char *argv[])
 {
+	//TODO: fix gamebreaking bug which stop renders pieces after some moves (seems to be SDL related)
+	//bug occurs after unification of update and drawHighlights function
 	Screen screen;
 	if(screen.init()==false){
 		cout<<"Error initalising SDL."<<endl;
@@ -70,20 +72,25 @@ int main(int argc, char *argv[])
 							Move move(gamestate.m_chessBoard, moveCoord);
 							if(move.isLegal(legalMoves)){
 								//Currently buggy
-								makeMove(gamestate.m_chessBoard, move);
+								makeMove(gamestate, move);
 								//TODO: move this change of turn in the makeMove function
 								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 								std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
 							}
 						}
 					}
-					//update screen
-					screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, EndMove);
-					//and move has been made so new legalMoves need to be calculated
-					if(!EndMove){
-						//get legal moves
-						getLegalMoves(legalMoves, gamestate);
+				case SDL_KEYDOWN:
+					if (event.key.keysym.sym == SDLK_z) {
+						undoMove(gamestate);
 					}
+
+				//update screen
+				screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, EndMove);
+				//and move has been made so new legalMoves need to be calculated
+				if(!EndMove){
+					//get legal moves
+					getLegalMoves(legalMoves, gamestate);
+				}
 			}
 		}
 		SDL_Delay(floor(2.0f));
