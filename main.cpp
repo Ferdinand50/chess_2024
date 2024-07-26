@@ -70,20 +70,19 @@ int main(int argc, char *argv[])
 							// initialize move
 							Move move(gamestate.m_chessBoard, moveCoord);
 							if(move.isLegal(legalMoves)){
-								std::cout<<"Move is legal"<<std::endl;
+								//Currently buggy
+								makeMove(gamestate.m_chessBoard, move);
+								//TODO: move this change of turn in the makeMove function
+								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
+								std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
+
+								//update screen
+								//TODO: unify drawHighlights and update once a timestep
+								screen.update(gamestate.m_chessBoard);
+
+								//get legal moves
+								getLegalMoves(legalMoves, gamestate);
 							}
-							//Currently buggy
-							makeMove(gamestate.m_chessBoard, move);
-							//TODO: move this change of turn in the makeMove function
-							gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
-							std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
-
-							//update screen
-							//TODO: unify drawHighlights and update once a timestep
-							screen.update(gamestate.m_chessBoard);
-
-							//get legal moves
-							getLegalMoves(legalMoves, gamestate);
 						}
 					}
 			}

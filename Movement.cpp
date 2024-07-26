@@ -63,7 +63,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     }
 
     //front 2x square is empty and starting pawn pose
-    if(y == homeSquare && gamestate.m_chessBoard[y+direction*2][x]==0 ){
+    if(y == homeSquare && gamestate.m_chessBoard[y+direction*2][x]==0 && gamestate.m_chessBoard[y+direction][x]==0){
         moveCoord.xEnd = x;
         moveCoord.yEnd = y + direction*2;
         Move move(gamestate.m_chessBoard, moveCoord);
@@ -71,7 +71,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     }
 
     //check if there is an attack square and if there is an enemey piece on it (right)
-    if(!(y== 7 || y==0) && x!=7 && gamestate.m_chessBoard[x+1][y+direction] != 0 && !gamestate.isPieceTurn(x+1,y+direction)){
+    if(!(y== 7 || y==0 || x==7) && gamestate.m_chessBoard[y+direction][x+1] != 0 && !gamestate.isPieceTurn(x+1,y+direction)){
         moveCoord.xEnd = x + 1;
         moveCoord.yEnd = y + direction;
         Move move(gamestate.m_chessBoard, moveCoord);
@@ -79,7 +79,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     }
 
     //check if there is an attack square and if there is an enemey piece on it (left)
-    if(!(y== 7 || y==0) && x!=0 && gamestate.m_chessBoard[x-1][y+direction] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
+    if(!(y== 7 || y==0 || x==0) && gamestate.m_chessBoard[y+direction][x-1] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
         moveCoord.xEnd = x - 1;
         moveCoord.yEnd = y + direction;
         Move move(gamestate.m_chessBoard, moveCoord);
