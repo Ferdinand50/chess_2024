@@ -22,11 +22,15 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
             if(gamestate.m_chessBoard[y][x]>20 && gamestate.m_whitesTurn){
                 if(gamestate.m_chessBoard[y][x] == 21)
                     getPawnMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 23)
+                    getKnightMoves(legalMoves, gamestate, x, y);
                 }
             //blacks turn and piece is black
             else if(gamestate.m_chessBoard[y][x] > 0 && gamestate.m_chessBoard[y][x] < 20 && !gamestate.m_whitesTurn){
                 if(gamestate.m_chessBoard[y][x] == 11)
                     getPawnMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 13)
+                    getKnightMoves(legalMoves, gamestate, x, y);
                 }
         }    
     } 
@@ -84,6 +88,39 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         moveCoord.yEnd = y + direction;
         Move move(gamestate.m_chessBoard, moveCoord);
         legalMoves.push_back(move);
+    }
+}
+
+
+
+void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
+    //TODO: optimize this function
+    // Array to hold the possible knight moves
+    int knightMoves[8][2] = {
+        {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+        {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+    };
+
+    // This can be initialized in the getLegalMoves function
+    MoveCoord moveCoord;
+    moveCoord.xStart = x;
+    moveCoord.yStart = y;
+
+    // Iterate over all possible knight moves
+    for (int i = 0; i < 8; ++i) {
+        int newX = x + knightMoves[i][0];
+        int newY = y + knightMoves[i][1];
+
+        // Check if the new position is within the bounds of the board
+        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+            // Check if the new position is either empty or contains an enemy piece
+            if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
+                moveCoord.xEnd = newX;
+                moveCoord.yEnd = newY;
+                Move move(gamestate.m_chessBoard, moveCoord);
+                legalMoves.push_back(move);
+            }
+        }
     }
 }
 

@@ -47,6 +47,8 @@ void makeMove(int (&chessBoard)[8][8], Move move);
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
 //Get moves of pawns
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
+//get moves of knights
+void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 
 
 
