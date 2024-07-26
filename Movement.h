@@ -49,6 +49,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of knights
 void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
+//get moves of rooks
+void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 
 
 
