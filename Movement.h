@@ -45,12 +45,14 @@ public:
 void makeMove(int (&chessBoard)[8][8], Move move);
 //gets the valid moves for the current gamestate
 void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
-//Get moves of pawns
+//get moves of pawns
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of knights
 void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of rooks
 void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
+//get moves of bishops
+void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 
 
 

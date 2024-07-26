@@ -26,6 +26,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getRookMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 23)
                     getKnightMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 24)
+                    getBishopMoves(legalMoves, gamestate, x, y);
                 }
             //blacks turn and piece is black
             else if(gamestate.m_chessBoard[y][x] > 0 && gamestate.m_chessBoard[y][x] < 20 && !gamestate.m_whitesTurn){
@@ -35,6 +37,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getRookMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 13)
                     getKnightMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 14)
+                    getBishopMoves(legalMoves, gamestate, x, y);
                 }
         }    
     } 
@@ -173,6 +177,52 @@ void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         }
     }
 }
+
+
+void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
+    // This can be initialized in the getLegalMoves function
+    MoveCoord moveCoord;
+    moveCoord.xStart = x;
+    moveCoord.yStart = y;
+
+    // Directions the bishop can move in (top-right, top-left, bottom-right, bottom-left)
+    int directions[4][2] = {
+        {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+    };
+
+    // Iterate over all possible directions
+    for (int i = 0; i < 4; ++i) {
+        int dx = directions[i][0];
+        int dy = directions[i][1];
+        int newX = x + dx;
+        int newY = y + dy;
+
+        // Continue moving in the current direction until the end of the board or a piece is encountered
+        while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+            // Check if the new position is empty
+            if (gamestate.m_chessBoard[newY][newX] == 0) {
+                moveCoord.xEnd = newX;
+                moveCoord.yEnd = newY;
+                Move move(gamestate.m_chessBoard, moveCoord);
+                legalMoves.push_back(move);
+            } else {
+                // If the position is occupied by an enemy piece, add the move and stop in this direction
+                if (!gamestate.isPieceTurn(newX, newY)) {
+                    moveCoord.xEnd = newX;
+                    moveCoord.yEnd = newY;
+                    Move move(gamestate.m_chessBoard, moveCoord);
+                    legalMoves.push_back(move);
+                }
+                // Stop in this direction regardless of whether the piece is friendly or enemy
+                break;
+            }
+            // Move further in the current direction
+            newX += dx;
+            newY += dy;
+        }
+    }
+}
+
 
 
 
