@@ -35,8 +35,9 @@ private:
 public:
     Screen();
     bool init();
-    void update(int board[8][8]);
+    void update(int board[8][8], const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights);
     void draw_board();
+    //draw possile moves of a piece
     void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
     void draw_pieces(int board[8][8]);
     // bool processEvents();

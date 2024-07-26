@@ -119,15 +119,14 @@ void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y){
             SDL_RenderFillRect(m_renderer, &rect);
         }
     }
-    
-    //TODO: remove this
-    SDL_RenderPresent(m_renderer);
 }
 
 
 
-void Screen::update(int board[8][8]){
+void Screen::update(int board[8][8], const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights){
     draw_board();
+    if(b_drawHighlights)
+        drawHighlights(legalMoves, x, y);
     draw_pieces(board);
     SDL_RenderPresent(m_renderer);
 

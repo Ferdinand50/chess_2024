@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 	getLegalMoves(legalMoves, gamestate);
 
     // Draw init board
-    screen.update(gamestate.m_chessBoard);
+    screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, false);
 
 	bool QUIT = false;
 	while (!QUIT) {
@@ -54,13 +54,12 @@ int main(int argc, char *argv[])
 							moveCoord.yStart = yC;
 							StartMove = false;
 							EndMove = true;
-							//TODO: implement a draw highlight function
-							screen.drawHighlights(legalMoves, xC, yC);
 							}
 					}
 					else{
 						//dont accept same start and end square
 						//TODO: dont accept same color insted 
+						//TODO: piece of same color gets selected therefore one step back needs to be implemented
 						if(moveCoord.xStart !=xC || moveCoord.yStart!=yC){
 							moveCoord.xEnd = xC;
 							moveCoord.yEnd = yC;
@@ -75,15 +74,15 @@ int main(int argc, char *argv[])
 								//TODO: move this change of turn in the makeMove function
 								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 								std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
-
-								//update screen
-								//TODO: unify drawHighlights and update once a timestep
-								screen.update(gamestate.m_chessBoard);
-
-								//get legal moves
-								getLegalMoves(legalMoves, gamestate);
 							}
 						}
+					}
+					//update screen
+					screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, EndMove);
+					//and move has been made so new legalMoves need to be calculated
+					if(!EndMove){
+						//get legal moves
+						getLegalMoves(legalMoves, gamestate);
 					}
 			}
 		}
