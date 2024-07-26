@@ -28,6 +28,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getKnightMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 24)
                     getBishopMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 25)
+                    getQueenMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 26)
                     getKingMoves(legalMoves, gamestate, x, y);
                 }
@@ -41,6 +43,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getKnightMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 14)
                     getBishopMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 15)
+                    getQueenMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 16)
                     getKingMoves(legalMoves, gamestate, x, y);
                 }
@@ -226,6 +230,13 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
         }
     }
 }
+
+
+void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y){
+    getBishopMoves(legalMoves, gamestate, x, y);
+    getRookMoves(legalMoves, gamestate, x, y);
+}
+
 
 
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
