@@ -28,6 +28,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getKnightMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 24)
                     getBishopMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 26)
+                    getKingMoves(legalMoves, gamestate, x, y);
                 }
             //blacks turn and piece is black
             else if(gamestate.m_chessBoard[y][x] > 0 && gamestate.m_chessBoard[y][x] < 20 && !gamestate.m_whitesTurn){
@@ -39,6 +41,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate){
                     getKnightMoves(legalMoves, gamestate, x, y);
                 else if(gamestate.m_chessBoard[y][x] == 14)
                     getBishopMoves(legalMoves, gamestate, x, y);
+                else if(gamestate.m_chessBoard[y][x] == 16)
+                    getKingMoves(legalMoves, gamestate, x, y);
                 }
         }    
     } 
@@ -224,6 +228,35 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
 }
 
 
+void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
+    // This can be initialized in the getLegalMoves function
+    MoveCoord moveCoord;
+    moveCoord.xStart = x;
+    moveCoord.yStart = y;
+
+    // Directions the king can move in (8 possible moves)
+    int directions[8][2] = {
+        {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // Horizontal and vertical
+        {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Diagonal
+    };
+
+    // Iterate over all possible directions
+    for (int i = 0; i < 8; ++i) {
+        int newX = x + directions[i][0];
+        int newY = y + directions[i][1];
+
+        // Check if the new position is within the board
+        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+            // Check if the new position is either empty or occupied by an enemy piece
+            if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
+                moveCoord.xEnd = newX;
+                moveCoord.yEnd = newY;
+                Move move(gamestate.m_chessBoard, moveCoord);
+                legalMoves.push_back(move);
+            }
+        }
+    }
+}
 
 
 // Move class 

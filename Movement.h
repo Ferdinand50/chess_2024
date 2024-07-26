@@ -53,6 +53,8 @@ void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
 void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of bishops
 void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
+//get moves of Kings
+void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 
 
 
