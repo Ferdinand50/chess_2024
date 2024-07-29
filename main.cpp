@@ -38,7 +38,6 @@ int main(int argc, char *argv[])
 
 	bool QUIT = false;
 	while (!QUIT) {
-
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
 				case SDL_QUIT:
@@ -58,10 +57,8 @@ int main(int argc, char *argv[])
 							EndMove = true;
 							}
 					}
-					else{
+					else {
 						//dont accept same start and end square
-						//TODO: dont accept same color insted 
-						//TODO: piece of same color gets selected therefore one step back needs to be implemented
 						if(moveCoord.xStart !=xC || moveCoord.yStart!=yC){
 							moveCoord.xEnd = xC;
 							moveCoord.yEnd = yC;
@@ -71,11 +68,17 @@ int main(int argc, char *argv[])
 							// initialize move
 							Move move(gamestate.m_chessBoard, moveCoord);
 							if(move.isLegal(legalMoves)){
-								//Currently buggy
+								//make the move
 								makeMove(gamestate, move);
 								//TODO: move this change of turn in the makeMove function
 								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 								std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
+							// deselcted intial piece and select new one of same color
+							} else if(gamestate.isPieceTurn(xC, yC)){
+								moveCoord.xStart = xC;
+								moveCoord.yStart = yC;
+								StartMove = false;
+								EndMove = true;
 							}
 						}
 					}
