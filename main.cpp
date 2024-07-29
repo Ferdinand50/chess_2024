@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	getLegalMoves(legalMoves, gamestate);
 
     // Draw init board
-    screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, false);
+    screen.update(gamestate, legalMoves, xC, yC, false);
 
 	bool QUIT = false;
 	while (!QUIT) {
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
 					}
 
 				//update screen
-				screen.update(gamestate.m_chessBoard, legalMoves, xC, yC, EndMove);
+				screen.update(gamestate, legalMoves, xC, yC, EndMove);
 				//and move has been made so new legalMoves need to be calculated
 				if(!EndMove){
 					//get legal moves
@@ -96,6 +96,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
+		// waiting timer: necessary for syncing 
 		SDL_Delay(floor(2.0f));
 	} 
 	//TODO: Fix segmentation fault while closing

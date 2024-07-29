@@ -26,6 +26,8 @@ private:
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture; 
     SDL_Surface * m_images[12];
+    SDL_Rect m_rect;
+    SDL_Texture* m_boardTexture;
 
     // bool m_second_click;
     // int m_current_click[2];
@@ -35,12 +37,14 @@ private:
 public:
     Screen();
     bool init();
-    void update(int board[8][8], const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights);
+    void update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights);
     void draw_board();
     //draw possile moves of a piece
     void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
-    void draw_pieces(int board[8][8]);
+    void draw_pieces(const GameState &gamestate);
     // bool processEvents();
+    //precompute the 8x8 chess board
+    void precomputeBoard();
     void close();
 };
 
