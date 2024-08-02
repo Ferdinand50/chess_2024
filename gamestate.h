@@ -61,6 +61,8 @@ public:
     GameState();
     //returns True if there is a piece on the square and its turn
     bool isPieceTurn(int x, int y) const;
+    // Debug function to print the chess board
+    void printBoard() const;
 
 
 };

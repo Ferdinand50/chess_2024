@@ -12,6 +12,7 @@
 
 using namespace std;
 
+
 class Screen {
 public:
     const static int SCREEN_WIDTH = 600;
@@ -28,21 +29,19 @@ private:
     SDL_Surface * m_images[12];
     SDL_Rect m_rect;
     SDL_Texture* m_boardTexture;
-
-    // bool m_second_click;
-    // int m_current_click[2];
-    // int m_previous_click[2];
     
 
 public:
     Screen();
     bool init();
+    //update the screen after each game move
     void update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights);
+    //draws the board
     void draw_board();
     //draw possile moves of a piece
     void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
+    //draw pieces on the board
     void draw_pieces(const GameState &gamestate);
-    // bool processEvents();
     //precompute the 8x8 chess board
     void precomputeBoard();
     void close();

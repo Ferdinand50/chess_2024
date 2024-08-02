@@ -37,3 +37,17 @@ bool GameState::isPieceTurn(int x, int y) const{
         return false;
     }
 }
+
+
+void GameState::printBoard() const {
+    for (int y = 0; y < 8; ++y) {
+        for (int x = 0; x < 8; ++x) {
+            if(m_chessBoard[y][x]!=0)
+                std::cout << m_chessBoard[y][x] << ' ';
+            else
+                std::cout << "0 " << ' ';
+        }
+        std::cout << std::endl;
+    }
+    std::cout<<"-----------------------"<<std::endl;
+}

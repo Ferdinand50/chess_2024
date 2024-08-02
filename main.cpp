@@ -9,8 +9,6 @@
 
 int main(int argc, char *argv[])
 {
-	//TODO: fix gamebreaking bug which stop renders pieces after some moves (seems to be SDL related)
-	//bug occurs after unification of update and drawHighlights function
 	Screen screen;
 	if(screen.init()==false){
 		cout<<"Error initalising SDL."<<endl;
@@ -72,7 +70,6 @@ int main(int argc, char *argv[])
 								makeMove(gamestate, move);
 								//TODO: move this change of turn in the makeMove function
 								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
-								std::cout<<moveCoord.xStart<<moveCoord.yStart<<moveCoord.xEnd<<moveCoord.yEnd<<gamestate.m_whitesTurn<<std::endl;
 							// deselcted intial piece and select new one of same color
 							} else if(gamestate.isPieceTurn(xC, yC)){
 								moveCoord.xStart = xC;
@@ -86,9 +83,11 @@ int main(int argc, char *argv[])
 					if (event.key.keysym.sym == SDLK_z) {
 						undoMove(gamestate);
 					}
+				//TODO: case reset game
 
 				//update screen
 				screen.update(gamestate, legalMoves, xC, yC, EndMove);
+				gamestate.printBoard();
 				//and move has been made so new legalMoves need to be calculated
 				if(!EndMove){
 					//get legal moves

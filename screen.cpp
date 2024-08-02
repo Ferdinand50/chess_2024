@@ -108,15 +108,16 @@ void Screen::draw_board(){
 //TODO: use anti alising 
 void Screen::draw_pieces(const GameState &gamestate){
     //iterate over board
-    for(int rank=0; rank<8;rank++){
-        for(int file=0; file<8;file++){
-            if(gamestate.m_chessBoard[rank][file] != 0)
-                {
-                m_rect.x = file*SCREEN_WIDTH/8;
-                m_rect.y = rank*SCREEN_WIDTH/8;
-                m_texture = SDL_CreateTextureFromSurface(m_renderer, m_images[m_pieceToImageIndex[gamestate.m_chessBoard[rank][file]]]);
-                SDL_RenderCopy(m_renderer,m_texture,NULL,&m_rect);
-                }
+    for(int rank = 0; rank < 8; rank++){
+        for(int file = 0; file < 8; file++){
+            if(gamestate.m_chessBoard[rank][file] != 0){
+                m_rect.x = file * SCREEN_WIDTH / 8;
+                m_rect.y = rank * SCREEN_WIDTH / 8;
+                //TODO: greate for each piece one texture in the init screen
+                SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, m_images[m_pieceToImageIndex[gamestate.m_chessBoard[rank][file]]]);
+                SDL_RenderCopy(m_renderer, texture, NULL, &m_rect);
+                SDL_DestroyTexture(texture);  // Free the texture after it is used
+            }
         }    
     } 
 }
@@ -134,10 +135,8 @@ void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y){
 }
 
 
-//TODO: use reference
 void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights){
     SDL_RenderClear(m_renderer);
-    //TODO: use precompied board texture
     draw_board();
     if(b_drawHighlights)
         drawHighlights(legalMoves, x, y);
