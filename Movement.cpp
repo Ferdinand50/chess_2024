@@ -18,6 +18,8 @@ void undoMove(GameState &gamestate){
 
         gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = move.m_pieceMoved;
         gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceTaken;
+        //change turn of player
+        gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
     } else {
         std::cout<<"No move to undo"<<std::endl;
     }
