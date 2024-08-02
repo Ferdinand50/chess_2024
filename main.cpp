@@ -68,8 +68,6 @@ int main(int argc, char *argv[])
 							if(move.isLegal(legalMoves)){
 								//make the move
 								makeMove(gamestate, move);
-								//TODO: move this change of turn in the makeMove function
-								gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 							// deselcted intial piece and select new one of same color
 							} else if(gamestate.isPieceTurn(xC, yC)){
 								moveCoord.xStart = xC;
@@ -87,7 +85,6 @@ int main(int argc, char *argv[])
 
 				//update screen
 				screen.update(gamestate, legalMoves, xC, yC, EndMove);
-				gamestate.printBoard();
 				//and move has been made so new legalMoves need to be calculated
 				if(!EndMove){
 					//get legal moves

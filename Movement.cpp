@@ -6,6 +6,8 @@ void makeMove(GameState &gamestate, Move move){
     gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = 0;
     //move piece to new square
     gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceMoved;
+    //change turn of player
+    gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
     //log selected move
     gamestate.moveLog.push(move);
 }
