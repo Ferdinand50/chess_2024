@@ -1,76 +1,50 @@
 #include "screen.h"
 
-
 Screen::Screen() :
-    m_window(NULL),m_renderer(NULL),m_texture(NULL),m_images{NULL}{
+    m_window(NULL), m_renderer(NULL), m_texture(NULL), m_boardTexture(NULL) {
+    memset(m_images, 0, sizeof(m_images));
+    memset(m_textures, 0, sizeof(m_textures));
 }
 
-bool Screen::init(){
-
+bool Screen::init() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		cout << "SDL init failed." << endl;
-		return false;
-	}
+        cout << "SDL init failed." << endl;
+        return false;
+    }
 
-	m_window = SDL_CreateWindow("Chess",
-	SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
-			SCREEN_WIDTH, SDL_WINDOW_SHOWN);
+    m_window = SDL_CreateWindow("Chess",
+        SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
+        SCREEN_WIDTH, SDL_WINDOW_SHOWN);
 
+    if (m_window == NULL) {
+        SDL_Quit();
+        return false;
+    }
 
-	if (m_window == NULL) {
-		SDL_Quit();
-		return false;
-	}
+    m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (m_renderer == NULL) {
+        cout << "Could not create renderer" << endl;
+        SDL_DestroyWindow(m_window);
+        SDL_Quit();
+        return false;
+    }
 
-	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888,
-							SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_WIDTH);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 
-	if(m_renderer == NULL) {
-		cout << "Could not create renderer" <<endl;
-		SDL_DestroyWindow(m_window);
-		SDL_Quit();
-		return false;
-	}
-
-	if(m_texture == NULL) {
-		cout << "Could not create texture" <<endl;
-		SDL_DestroyRenderer(m_renderer);
-		SDL_DestroyWindow(m_window);
-		SDL_Quit();
-		return false;
-	}
-
-    //enables transparency for drawHighlights
+    // Set the blend mode
     SDL_SetRenderDrawBlendMode(m_renderer, SDL_BLENDMODE_BLEND);
 
-    //setup width and height of squares used for drawing
     m_rect.w = SCREEN_WIDTH / 8;
     m_rect.h = SCREEN_WIDTH / 8;
 
-    //precompute 8x8 board
     precomputeBoard();
-
-    //load Images
-    m_images[0] = IMG_Load("src/images/bR.png");
-    m_images[1] = IMG_Load("src/images/bN.png");
-    m_images[2] = IMG_Load("src/images/bB.png");
-    m_images[3] = IMG_Load("src/images/bQ.png");
-    m_images[4] = IMG_Load("src/images/bK.png");
-    m_images[5] = IMG_Load("src/images/bP.png");
-
-    m_images[6] = IMG_Load("src/images/wR.png");
-    m_images[7] = IMG_Load("src/images/wN.png");
-    m_images[8] = IMG_Load("src/images/wB.png");
-    m_images[9] = IMG_Load("src/images/wQ.png");
-    m_images[10] = IMG_Load("src/images/wK.png");
-    m_images[11] = IMG_Load("src/images/wP.png");
+    loadImages();
+    createTextures();
 
     return true;
 }
 
-
-void Screen::precomputeBoard(){
+void Screen::precomputeBoard() {
     m_boardTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_WIDTH);
     if (!m_boardTexture) {
         std::cerr << "Failed to create board texture! SDL_Error: " << SDL_GetError() << std::endl;
@@ -95,61 +69,83 @@ void Screen::precomputeBoard(){
     }
 
     SDL_SetRenderTarget(m_renderer, nullptr);
-} 
+}
 
-
-
-
-void Screen::draw_board(){
+void Screen::draw_board() {
     SDL_RenderCopy(m_renderer, m_boardTexture, nullptr, nullptr);
 }
 
+void Screen::loadImages() {
+    m_images[0] = IMG_Load("src/images/bR.png");
+    m_images[1] = IMG_Load("src/images/bN.png");
+    m_images[2] = IMG_Load("src/images/bB.png");
+    m_images[3] = IMG_Load("src/images/bQ.png");
+    m_images[4] = IMG_Load("src/images/bK.png");
+    m_images[5] = IMG_Load("src/images/bP.png");
 
-//TODO: use anti alising 
-void Screen::draw_pieces(const GameState &gamestate){
-    //iterate over board
-    for(int rank = 0; rank < 8; rank++){
-        for(int file = 0; file < 8; file++){
-            if(gamestate.m_chessBoard[rank][file] != 0){
-                m_rect.x = file * SCREEN_WIDTH / 8;
-                m_rect.y = rank * SCREEN_WIDTH / 8;
-                //TODO: greate for each piece one texture in the init screen
-                SDL_Texture* texture = SDL_CreateTextureFromSurface(m_renderer, m_images[m_pieceToImageIndex[gamestate.m_chessBoard[rank][file]]]);
-                SDL_RenderCopy(m_renderer, texture, NULL, &m_rect);
-                SDL_DestroyTexture(texture);  // Free the texture after it is used
-            }
-        }    
-    } 
+    m_images[6] = IMG_Load("src/images/wR.png");
+    m_images[7] = IMG_Load("src/images/wN.png");
+    m_images[8] = IMG_Load("src/images/wB.png");
+    m_images[9] = IMG_Load("src/images/wQ.png");
+    m_images[10] = IMG_Load("src/images/wK.png");
+    m_images[11] = IMG_Load("src/images/wP.png");
 }
 
-void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y){
-    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 128);
+void Screen::createTextures() {
+    for (int i = 0; i < 12; i++) {
+        if (m_images[i]) {
+            m_textures[i] = SDL_CreateTextureFromSurface(m_renderer, m_images[i]);
+            SDL_FreeSurface(m_images[i]);
+            if (!m_textures[i]) {
+                std::cerr << "Failed to create texture for piece " << i << "! SDL_Error: " << SDL_GetError() << std::endl;
+            }
+        }
+    }
+}
 
+void Screen::draw_pieces(const GameState &gamestate) {
+    for (int rank = 0; rank < 8; rank++) {
+        for (int file = 0; file < 8; file++) {
+            int piece = gamestate.m_chessBoard[rank][file];
+            if (piece != 0) {
+                m_rect.x = file * SCREEN_WIDTH / 8;
+                m_rect.y = rank * SCREEN_WIDTH / 8;
+                SDL_RenderCopy(m_renderer, m_textures[m_pieceToImageIndex[piece]], NULL, &m_rect);
+            }
+        }
+    }
+}
+
+void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y) {
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 0, 128);
     for (const Move &move : legalMoves) {
-        if(move.m_start_x == x && move.m_start_y == y){
-            m_rect.x = move.m_end_x * SCREEN_WIDTH/8;
-            m_rect.y = move.m_end_y * SCREEN_WIDTH/8;
+        if (move.m_start_x == x && move.m_start_y == y) {
+            m_rect.x = move.m_end_x * SCREEN_WIDTH / 8;
+            m_rect.y = move.m_end_y * SCREEN_WIDTH / 8;
             SDL_RenderFillRect(m_renderer, &m_rect);
         }
     }
 }
 
-
-void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights){
+void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights) {
     SDL_RenderClear(m_renderer);
     draw_board();
-    if(b_drawHighlights)
+    if (b_drawHighlights)
         drawHighlights(legalMoves, x, y);
     draw_pieces(gamestate);
     SDL_RenderPresent(m_renderer);
 }
 
-
-
-void Screen::close(){
+void Screen::close() {
+    for (int i = 0; i < 12; i++) {
+        if (m_textures[i]) {
+            SDL_DestroyTexture(m_textures[i]);
+        }
+    }
     IMG_Quit();
-	SDL_DestroyRenderer(m_renderer);
-	SDL_DestroyTexture(m_texture);
-	SDL_DestroyWindow(m_window);
-	SDL_Quit();
+    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyTexture(m_texture);
+    SDL_DestroyTexture(m_boardTexture);
+    SDL_DestroyWindow(m_window);
+    SDL_Quit();
 }

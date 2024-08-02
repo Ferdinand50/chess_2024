@@ -26,9 +26,10 @@ private:
     SDL_Window *m_window;
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture; 
-    SDL_Surface * m_images[12];
     SDL_Rect m_rect;
     SDL_Texture* m_boardTexture;
+    SDL_Surface* m_images[12];
+    SDL_Texture* m_textures[12];
     
 
 public:
@@ -44,7 +45,12 @@ public:
     void draw_pieces(const GameState &gamestate);
     //precompute the 8x8 chess board
     void precomputeBoard();
+    //load in images
+    void loadImages();
+    //create textures from the images
+    void createTextures();
     void close();
+
 };
 
 
