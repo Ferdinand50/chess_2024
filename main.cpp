@@ -3,12 +3,15 @@
 #include <SDL2/SDL_image.h>
 #include <cmath> 
 #include <vector>
+#include <string.h>
 #include "screen.h"
 #include "gamestate.h"
 #include "Movement.h"
 
+
 int main(int argc, char *argv[])
 {
+	//TODO: there seems to be a back which moves pieces sometimes (more investigation needed)
 	Screen screen;
 	if(screen.init()==false){
 		cout<<"Error initalising SDL."<<endl;
@@ -29,7 +32,8 @@ int main(int argc, char *argv[])
 	MoveCoord moveCoord;
 
 	std::vector<Move> legalMoves;
-	getLegalMoves(legalMoves, gamestate);
+	std::vector<Move> theoreticalMoves;
+	getLegalMoves(legalMoves, theoreticalMoves, gamestate);
 
     // Draw init board
     screen.update(gamestate, legalMoves, xC, yC, false);
@@ -88,14 +92,13 @@ int main(int argc, char *argv[])
 				//and move has been made so new legalMoves need to be calculated
 				if(!EndMove){
 					//get legal moves
-					getLegalMoves(legalMoves, gamestate);
+					getLegalMoves(legalMoves, theoreticalMoves, gamestate);
 				}
 			}
 		}
 		// waiting timer: necessary for syncing 
 		SDL_Delay(floor(2.0f));
 	} 
-	//TODO: Fix segmentation fault while closing
     screen.close();
 
     return 0;

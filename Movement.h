@@ -46,7 +46,9 @@ void makeMove(GameState &gamestate, Move move);
 //undoes the lastest move
 void undoMove(GameState &gamestate);
 //gets the valid moves for the current gamestate
-void getLegalMoves(std::vector<Move> &legalMoves, const GameState &gamestate);
+void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoreticalMoves, const GameState &gamestate);
+//gets the theoretical moves of each piece
+void getTheoreticalMoves(std::vector<Move> &theoreticalMoves, const GameState &gamestate);
 //get moves of pawns
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of knights
@@ -59,6 +61,8 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
 void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of Kings
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
+//check if current gamestate is in check
+void checkForChecks(const GameState &gamestate);
 
 
 

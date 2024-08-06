@@ -37,13 +37,17 @@ private:
     const int WHITE_KING = 26;
 
 public:
+    //TODO: initialize members in constructor 
+    // which turn is it
     bool m_whitesTurn;
+    // one player is in check
+    bool m_inCheck = false;
     //logger for undoing moves
     std::stack<Move> moveLog;
-    //keeps track of the active pieces for a faster way of itterating over the board
-    //TODO: remove this or support full implementation
-    std::vector<PieceInfo> m_whitePieces;
-    std::vector<PieceInfo> m_blackPieces;
+    //stores position of white King
+    std::vector<int> m_whiteKingPosition = {7, 4};
+    //stores position of black King
+    std::vector<int> m_blackKingPosition = {0, 4};
     //8x8 chess board
     int m_chessBoard[8][8] = {
         {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK},
