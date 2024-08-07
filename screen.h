@@ -42,13 +42,16 @@ public:
     //draw possile moves of a piece
     void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
     //draw pieces on the board
-    void draw_pieces(const GameState &gamestate);
+    void drawPieces(const GameState &gamestate);
     //precompute the 8x8 chess board
     void precomputeBoard();
     //load in images
     void loadImages();
     //create textures from the images
     void createTextures();
+    //draws the checks and pins on the board
+    void drawChecksandPins(const GameState &gamestate);
+    //frees allocated memory when closing the screen
     void close();
 
 };

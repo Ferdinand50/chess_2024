@@ -103,7 +103,7 @@ void Screen::createTextures() {
     }
 }
 
-void Screen::draw_pieces(const GameState &gamestate) {
+void Screen::drawPieces(const GameState &gamestate) {
     for (int rank = 0; rank < 8; rank++) {
         for (int file = 0; file < 8; file++) {
             int piece = gamestate.m_chessBoard[rank][file];
@@ -127,12 +127,38 @@ void Screen::drawHighlights(const std::vector<Move> &legalMoves, int x, int y) {
     }
 }
 
+
+void Screen::drawChecksandPins(const GameState &gamestate) {
+    //set up color red
+    SDL_SetRenderDrawColor(m_renderer, 255, 128, 128, 128);
+    //draw checks
+    for (const std::vector<int> &check : gamestate.m_checks) {
+            m_rect.x = check[0] * SCREEN_WIDTH / 8;
+            m_rect.y = check[1] * SCREEN_WIDTH / 8;
+            SDL_RenderFillRect(m_renderer, &m_rect);
+    }
+    //set up color color
+    SDL_SetRenderDrawColor(m_renderer, 173, 216, 230, 128);
+    //draw pins
+    for (const std::vector<int> &pin : gamestate.m_pins) {
+            m_rect.x = pin[0] * SCREEN_WIDTH / 8;
+            m_rect.y = pin[1] * SCREEN_WIDTH / 8;
+            SDL_RenderFillRect(m_renderer, &m_rect);
+    }
+}
+
 void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights) {
     SDL_RenderClear(m_renderer);
     draw_board();
-    if (b_drawHighlights)
+
+    if(b_drawHighlights)
         drawHighlights(legalMoves, x, y);
-    draw_pieces(gamestate);
+
+    //debug purposes
+    if(true)
+        drawChecksandPins(gamestate);
+
+    drawPieces(gamestate);
     SDL_RenderPresent(m_renderer);
 }
 
