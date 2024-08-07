@@ -41,9 +41,13 @@ public:
     // which turn is it
     bool m_whitesTurn;
     // one player is in check
-    bool m_inCheck = false;
+    mutable bool m_inCheck = false;
     //logger for undoing moves
     std::stack<Move> moveLog;
+    // Create a list of vectors, each containing 4 integers for containing pins (y, x, pin_direction_y, pin_direction_x)
+    mutable std::vector<std::vector<int>> m_pins;
+    // Create a list of vectors, each containing 4 integers for containing checks (y, x, pin_direction_y, pin_direction_x)
+    mutable std::vector<std::vector<int>> m_checks;
     //stores position of white King
     std::vector<int> m_whiteKingPosition = {7, 4};
     //stores position of black King

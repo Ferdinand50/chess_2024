@@ -40,7 +40,7 @@ void undoMove(GameState &gamestate){
         else if(move.m_pieceMoved == 16) {
             gamestate.m_blackKingPosition = {move.m_start_y, move.m_start_x};
         }
-        
+
     } else {
         std::cout<<"No move to undo"<<std::endl;
     }
@@ -53,6 +53,8 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
     // do all the moves for each piece which would be theoretical possible
     //TODO: only use legal moves vector
     getTheoreticalMoves(theoreticalMoves, gamestate);
+
+    checkForPinsAndChecks(gamestate);
 
     legalMoves = theoreticalMoves;
 
@@ -100,9 +102,106 @@ void getTheoreticalMoves(std::vector<Move> &theoreticalMoves, const GameState &g
 }
 
 
+//TODO: this function modifies the gamestate is this okay? (checks, pins, inCheck)
+void checkForPinsAndChecks(const GameState &gamestate){
+    //clear the pins and checks vector
+    gamestate.m_pins.clear();
+    gamestate.m_checks.clear();
+    //set inCheck to False
+    gamestate.m_inCheck = false;
 
-void checkForChecks(const GameState &gamestate){
+    int king_x;
+    int king_y;
 
+    if (gamestate.m_whitesTurn) {
+        king_y = gamestate.m_whiteKingPosition[0];
+        king_x = gamestate.m_whiteKingPosition[1];
+    } else {
+        king_y = gamestate.m_blackKingPosition[0];
+        king_x = gamestate.m_blackKingPosition[1];
+    }
+
+    //checking from King location outward for pins and ckechs, pins get stored
+    int directions[8][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+    // Iterate over all possible directions
+    for (int i = 0; i < 8; ++i) {
+        int dx = directions[i][0];
+        int dy = directions[i][1];
+        int newX = king_x + dx;
+        int newY = king_y + dy;
+        //counter to check how many step have been gone so far
+        int step_gone = 1;
+
+        std::vector<int> PossiblePin;
+
+        // Continue moving in the current direction until the end of the board or a piece is encountered
+        while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+            // Check if the new position has a piece
+            if (gamestate.m_chessBoard[newY][newX] != 0) {
+                // If the position is occupied by an alley piece
+                if (gamestate.isPieceTurn(newX, newY)) {
+                    //only first ally piece can be pinned
+                    if (PossiblePin.empty())
+                        PossiblePin = {newX, newY, directions[i][0], directions[i][1]};
+                    //already second pin so no need to check for further pins
+                    else
+                        break;
+                }
+                // If the position is occupied by an enemy piece
+                if (!gamestate.isPieceTurn(newX, newY)) {
+                    //declaration of type of selected piece
+                    //vertical + horizontal multiple squares: Queen and Rook
+                    //vertical + horizontal single squares: Queen, King Rook
+                    //diagonal multiple squares: Queen, Bishop 
+                    //diagonal single squares: Queen, King, Bishop and Pawn
+                    //pawn: 1 Rook: 2 Knight: 3 Bishop: 4 Queen: 5 King: 6
+                    int type = getPieceType(gamestate, newX, newY);
+                    //TODO: check if gamestate white turn is correct
+                    if ((0 <= i && i <= 3 && type == 2) || (4 <= i && i <= 7 && type == 4) || (step_gone == 1 && type == 1 && ((!gamestate.m_whitesTurn && 6 <= i && i <= 7) || (gamestate.m_whitesTurn && 4 <= i && i <= 5))) || (type == 5) || (step_gone == 1 && type == 6)) {
+                        //no pin so its check
+                        if (PossiblePin.empty()){
+                            gamestate.m_inCheck = true;
+                            gamestate.m_checks.push_back({newX, newY, directions[i][0], directions[i][1]});
+                            break;
+                        }
+                        //allied piece is blocking check so pin
+                        else
+                            gamestate.m_pins.push_back(PossiblePin);
+                    }
+                    //enemy piece but not applying check
+                    else
+                        break;
+                }
+            }
+            // Move further in the current direction
+            newX += dx;
+            newY += dy;
+            step_gone += 1;
+        }
+    }
+    //check for knights checks
+    int knightMoves[8][2] = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+
+    for (int j = 0; j < 8; ++j) {
+        int newX = king_x + knightMoves[j][0];
+        int newY = king_y + knightMoves[j][1];
+        //check board boundaries
+        if(newX >= 0 && newX < 8 && newY >= 0 && newY < 8){
+            int type = getPieceType(gamestate, newX, newY);
+            //enemy knight
+            if(type==3 && !gamestate.isPieceTurn(newX, newY)){
+                gamestate.m_inCheck = true;
+                gamestate.m_checks.push_back({newX, newY, knightMoves[j][0], knightMoves[j][1]});
+            }
+        }
+    }
+}
+
+int getPieceType(const GameState &gamestate, int x, int y){
+    int piece = gamestate.m_chessBoard[y][x];
+    std::string pieceStr = std::to_string(piece);
+    return pieceStr[1] - '0'; // Convert the character to an integer
 }
 
 

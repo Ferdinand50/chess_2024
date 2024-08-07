@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
 
 				//update screen
 				screen.update(gamestate, legalMoves, xC, yC, EndMove);
+				std::cout<<gamestate.m_inCheck<<std::endl;
 				//and move has been made so new legalMoves need to be calculated
 				if(!EndMove){
 					//get legal moves

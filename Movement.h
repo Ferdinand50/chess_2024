@@ -61,8 +61,10 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
 void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
 //get moves of Kings
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y);
-//check if current gamestate is in check
-void checkForChecks(const GameState &gamestate);
+//check if current gamestate is in check and if certain pieces are pinned
+void checkForPinsAndChecks(const GameState &gamestate);
+//return the type of a piece as int
+int getPieceType(const GameState &gamestate, int x, int y);
 
 
 
