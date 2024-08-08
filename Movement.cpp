@@ -284,8 +284,29 @@ int getPieceType(const GameState &gamestate, int x, int y){
 
 
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y){
-    //TODO: optimize this function
-    //direction, homeSquare, moveCoord can be init in advance
+    //check is piece is pinned
+    bool piecePinned = false;
+    std::vector<int> pinDirection = {0, 0};
+
+    //vertical directions
+    std::vector<int> v1 = {0, -1};
+    std::vector<int> v2 = {0, 1};
+    //diagonal right
+    std::vector<int> dr1 = {1, -1};
+    std::vector<int> dr2 = {1, 1};
+    //diagonal left
+    std::vector<int> dl1 = {-1, -1};
+    std::vector<int> dl2 = {-1, 1};
+
+    //check if piece is pinned
+    for (int i = gamestate.m_pins.size() - 1; i >= 0; --i) {
+        if (gamestate.m_pins[i][0] == x && gamestate.m_pins[i][1] == y) {
+            piecePinned = true;
+            pinDirection = {gamestate.m_pins[i][2], gamestate.m_pins[i][3]};
+            // gamestate.m_pins.erase(gamestate.m_pins.begin() + i);  // Remove the element at index i
+            break;
+        }
+    }
 
     //direction changes depending on the color
     int direction;
@@ -305,34 +326,46 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
 
     //check if piece still can move to the front square and if it is empty 
     if(!(y== 7 || y==0) && gamestate.m_chessBoard[y+direction][x]==0){
-        moveCoord.xEnd = x;
-        moveCoord.yEnd = y + direction;
-        Move move(gamestate.m_chessBoard, moveCoord);
-        legalMoves.push_back(move);
+        //check if piece is pinned or can move in pin direction
+        if(!piecePinned || (pinDirection == v1 || pinDirection == v2)){
+            moveCoord.xEnd = x;
+            moveCoord.yEnd = y + direction;
+            Move move(gamestate.m_chessBoard, moveCoord);
+            legalMoves.push_back(move);
+        }
     }
 
     //front 2x square is empty and starting pawn pose
     if(y == homeSquare && gamestate.m_chessBoard[y+direction*2][x]==0 && gamestate.m_chessBoard[y+direction][x]==0){
-        moveCoord.xEnd = x;
-        moveCoord.yEnd = y + direction*2;
-        Move move(gamestate.m_chessBoard, moveCoord);
-        legalMoves.push_back(move);
+        //check if piece is pinned or can move in pin direction
+        if(!piecePinned || (pinDirection == v1 || pinDirection == v2)){
+            moveCoord.xEnd = x;
+            moveCoord.yEnd = y + direction*2;
+            Move move(gamestate.m_chessBoard, moveCoord);
+            legalMoves.push_back(move);
+        }
     }
 
     //check if there is an attack square and if there is an enemey piece on it (right)
     if(!(y== 7 || y==0 || x==7) && gamestate.m_chessBoard[y+direction][x+1] != 0 && !gamestate.isPieceTurn(x+1,y+direction)){
-        moveCoord.xEnd = x + 1;
-        moveCoord.yEnd = y + direction;
-        Move move(gamestate.m_chessBoard, moveCoord);
-        legalMoves.push_back(move);
+        //check if piece is pinned or can move in pin direction
+        if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
+            moveCoord.xEnd = x + 1;
+            moveCoord.yEnd = y + direction;
+            Move move(gamestate.m_chessBoard, moveCoord);
+            legalMoves.push_back(move);
+        }
     }
 
     //check if there is an attack square and if there is an enemey piece on it (left)
     if(!(y== 7 || y==0 || x==0) && gamestate.m_chessBoard[y+direction][x-1] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
-        moveCoord.xEnd = x - 1;
-        moveCoord.yEnd = y + direction;
-        Move move(gamestate.m_chessBoard, moveCoord);
-        legalMoves.push_back(move);
+        //check if piece is pinned or can move in pin direction
+        if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
+            moveCoord.xEnd = x - 1;
+            moveCoord.yEnd = y + direction;
+            Move move(gamestate.m_chessBoard, moveCoord);
+            legalMoves.push_back(move);
+        }
     }
 }
 
