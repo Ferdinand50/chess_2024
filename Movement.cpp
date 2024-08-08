@@ -474,6 +474,11 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     moveCoord.xStart = x;
     moveCoord.yStart = y;
 
+    //save inCheck, check, and pins
+    bool temp_inCheck = gamestate.m_inCheck;
+    std::vector<std::vector<int>> temp_checks = gamestate.m_checks;
+    std::vector<std::vector<int>> temp_pins = gamestate.m_pins;
+
     // Directions the king can move in (8 possible moves)
     int directions[8][2] = {
         {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // Horizontal and vertical
@@ -484,19 +489,47 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     for (int i = 0; i < 8; ++i) {
         int newX = x + directions[i][0];
         int newY = y + directions[i][1];
-
         // Check if the new position is within the board
         if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
             // Check if the new position is either empty or occupied by an enemy piece
             if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
-                moveCoord.xEnd = newX;
-                moveCoord.yEnd = newY;
-                Move move(gamestate.m_chessBoard, moveCoord);
-                legalMoves.push_back(move);
+                //move king to this position and see if he would be in check
+                if (gamestate.m_whitesTurn) {
+                    gamestate.m_whiteKingPosition[0] = newY;  //y
+                    gamestate.m_whiteKingPosition[1] = newX;  //x
+                } else {
+                    gamestate.m_blackKingPosition[0] = newY;  //y
+                    gamestate.m_blackKingPosition[1] = newX;  //x
+                }
+                //TODO: do I need to change color of player whos turn is it?
+                //check if king is in check
+                checkForPinsAndChecks(gamestate);
+                //not in check so move is valid
+                if(!gamestate.m_inCheck){
+                    moveCoord.xEnd = newX;
+                    moveCoord.yEnd = newY;
+                    Move move(gamestate.m_chessBoard, moveCoord);
+                    legalMoves.push_back(move);
+                }
             }
         }
     }
+    //place king back to original position
+    if (gamestate.m_whitesTurn) {
+        gamestate.m_whiteKingPosition[0] = y;  //y
+        gamestate.m_whiteKingPosition[1] = x;  //x
+    } else {
+        gamestate.m_blackKingPosition[0] = y;  //y
+        gamestate.m_blackKingPosition[1] = x;  //x
+    }
+
+    //load original gamestate
+    gamestate.m_inCheck = temp_inCheck;
+    gamestate.m_checks = temp_checks;
+    gamestate.m_pins = temp_pins;
 }
+
+
 
 
 // Move class 
