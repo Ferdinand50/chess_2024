@@ -122,14 +122,9 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
         //gs.currentCastleRights = tempCastleRights
         //moves = getCastleMoves(gs, position_rank, position_file, moves)
     }
-    //TODO: implement this function
-    //CheckmateandStalemate(gs, moves)
-
-    // do all the moves for each piece which would be theoretical possible
     //TODO: only use legal moves vector
-    //getTheoreticalMoves(theoreticalMoves, gamestate);
-
     legalMoves = theoreticalMoves;
+    CheckmateandStalemate(legalMoves, gamestate);
 }
 
 
@@ -171,6 +166,17 @@ void getTheoreticalMoves(std::vector<Move> &theoreticalMoves, const GameState &g
                 }
         }    
     } 
+}
+
+
+void CheckmateandStalemate(const std::vector<Move> &legalMoves, const GameState &gamestate){
+    //no Moves left so it is game over
+    if(legalMoves.size()==0){
+        if(gamestate.m_inCheck)
+            gamestate.m_checkmate = true;
+    }
+        else if (!gamestate.m_inCheck)
+            gamestate.m_stalemate = true;
 }
 
 

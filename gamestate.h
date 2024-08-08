@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Movement.h"
 #include <stack>
+
+#include "Movement.h"
+
 
 //forward declaration
 class Move;
@@ -42,6 +44,10 @@ public:
     bool m_whitesTurn;
     // one player is in check
     mutable bool m_inCheck = false;
+    //game is over
+    mutable bool m_checkmate = false;
+    //game is stalled
+    mutable bool m_stalemate = false;
     //logger for undoing moves
     std::stack<Move> moveLog;
     // Create a list of vectors, each containing 4 integers for containing pins (y, x, pin_direction_y, pin_direction_x)

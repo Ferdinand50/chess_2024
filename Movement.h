@@ -2,11 +2,12 @@
 #define MOVEMENT_H_
 
 #include <iostream>
-#include <string.h>
-#include "gamestate.h"
 #include <vector>
 #include <set>
 #include <utility> 
+
+#include <string.h>
+#include "gamestate.h"
 
 using namespace std;
 
@@ -69,6 +70,8 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
 void checkForPinsAndChecks(const GameState &gamestate);
 //return the type of a piece as int
 int getPieceType(const GameState &gamestate, int x, int y);
+//checks if the game is over
+void CheckmateandStalemate(const std::vector<Move> &legalMoves, const GameState &gamestate);
 
 
 
