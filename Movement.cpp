@@ -49,15 +49,87 @@ void undoMove(GameState &gamestate){
 void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoreticalMoves, const GameState &gamestate){
     // Clear the elements of legalMoves vector
     legalMoves.clear();
+    //TODO: implement caslt rights
+    //tempCastleRights = backend.CastleRights(gs.currentCastleRights.bqs, gs.currentCastleRights.bks, gs.currentCastleRights.wqs, gs.currentCastleRights.wks)
+    //update check and pins
+    checkForPinsAndChecks(gamestate);
+
+    int king_x;
+    int king_y;
+
+    if (gamestate.m_whitesTurn) {
+        king_y = gamestate.m_whiteKingPosition[0];
+        king_x = gamestate.m_whiteKingPosition[1];
+    } else {
+        king_y = gamestate.m_blackKingPosition[0];
+        king_x = gamestate.m_blackKingPosition[1];
+    }
+
+    //King in Check
+    if(gamestate.m_inCheck){
+        //one check
+        if(gamestate.m_checks.size() == 1){
+            getTheoreticalMoves(theoreticalMoves, gamestate);
+            //block check
+            std::vector<int> check = gamestate.m_checks[0];
+            int check_x = check[0];
+            int check_y = check[1];
+            //enemy piece causing the check
+            int pieceCheckingType = getPieceType(gamestate, check_x, check_y);
+            //squares that pieces can move to
+            std::set<std::pair<int, int>> validSquares;
+            //if knight capture it or move king (check can not be blocked)
+            if(pieceCheckingType == 3){
+                validSquares.insert({check_x, check_y});
+            //check can be blocked
+            } else {
+                for (int i = 1; i <= 7; ++i) {
+                    //check[2] and check[3] are the check directions
+                    int validSquare_x = king_x + check[2] * i;
+                    int validSquare_y = king_y + check[3] * i;
+                    validSquares.insert({validSquare_x, validSquare_y});
+                    //once you get to piece end checks
+                    if(validSquare_x == check_x && validSquare_y == check_y)
+                        break;
+                }
+            }
+            //deletes moves which are not legal
+            //backwards iteration
+            for (int i = static_cast<int>(theoreticalMoves.size()) - 1; i >= 0; --i){
+                //move doesnt move king so it must block or capture
+                //TODO: check if rank and file is correct x and y
+                if (theoreticalMoves[i].m_pieceMoved != 16 && theoreticalMoves[i].m_pieceMoved != 26) {
+                    //move doesnt block or capture
+                    if (validSquares.find({theoreticalMoves[i].m_end_x, theoreticalMoves[i].m_end_y}) == validSquares.end()) {
+                        theoreticalMoves.erase(theoreticalMoves.begin() + i);
+                    }
+                }
+            }
+            //TODO: implement caslt rights
+            //gs.currentCastleRights = tempCastleRights
+        }
+        //double check king has to move
+        else
+            //TODO: fix king moves
+            getKingMoves(theoreticalMoves, gamestate, king_x, king_y);
+    }
+
+    //all moves are fine
+    else {
+        getTheoreticalMoves(theoreticalMoves, gamestate);
+        //get castle moves only possible if there is no check
+        //TODO: implement castle moves
+        //gs.currentCastleRights = tempCastleRights
+        //moves = getCastleMoves(gs, position_rank, position_file, moves)
+    }
+    //TODO: implement this function
+    //CheckmateandStalemate(gs, moves)
 
     // do all the moves for each piece which would be theoretical possible
     //TODO: only use legal moves vector
-    getTheoreticalMoves(theoreticalMoves, gamestate);
-
-    checkForPinsAndChecks(gamestate);
+    //getTheoreticalMoves(theoreticalMoves, gamestate);
 
     legalMoves = theoreticalMoves;
-
 }
 
 

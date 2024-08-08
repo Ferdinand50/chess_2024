@@ -5,6 +5,8 @@
 #include <string.h>
 #include "gamestate.h"
 #include <vector>
+#include <set>
+#include <utility> 
 
 using namespace std;
 
@@ -34,10 +36,12 @@ private:
     
 
 public:
+    //constructor
     //TODO: Use reference
     Move(int const chessBoard[8][8], MoveCoord moveCoord);
     //check if move is in legalMoves
     bool isLegal(std::vector<Move> const &legalMoves);
+    //closes the move
     void close();
 };
 
