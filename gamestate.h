@@ -45,8 +45,9 @@ public:
     mutable std::vector<int> m_blackKingPosition;
     //logger for undoing moves
     std::stack<Move> m_moveLog;
+    //TODO: optimize the usage of vectors for example use m_pins.reserve() and use emplace_back instead of push_back
     // Create a list of vectors, each containing 4 integers for containing pins (y, x, pin_direction_y, pin_direction_x)
-    mutable std::vector<std::vector<int>> m_pins;
+    mutable std::vector<std::vector<int>> m_pins; 
     // Create a list of vectors, each containing 4 integers for containing checks (y, x, pin_direction_y, pin_direction_x)
     mutable std::vector<std::vector<int>> m_checks;
     //8x8 chess board

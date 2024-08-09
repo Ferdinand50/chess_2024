@@ -21,6 +21,7 @@ struct MoveCoord{
     int yEnd;
 };
 
+//TODO: optimize the usage of vectors
 class Move{
 public:
     int m_pieceMoved;

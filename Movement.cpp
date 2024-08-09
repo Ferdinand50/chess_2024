@@ -11,6 +11,16 @@ void makeMove(GameState &gamestate, Move move){
     //log selected move
     gamestate.m_moveLog.push(move);
 
+    //white pawn promotion
+    if(move.m_pieceMoved == 21 && move.m_end_y == 0)
+        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = 25;
+    //black pawn promotion
+    else if(move.m_pieceMoved == 11 && move.m_end_y == 7)
+        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = 15;
+
+    //TODO: castle rights 
+
+
     //update King position
     //white King
     if(move.m_pieceMoved==26)
