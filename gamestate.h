@@ -12,7 +12,7 @@
 //forward declaration
 class Move;
 
-//used to keep track of the pieces on the board in an efficent way
+//used to keep track of the pieces on the board in an efficient way
 struct PieceInfo{
     int columm; //x
     int row; //y

@@ -39,7 +39,7 @@ private:
 public:
     //constructor
     //TODO: Use reference
-    Move(int const chessBoard[8][8], MoveCoord moveCoord);
+    Move(const GameState &gamestate, MoveCoord moveCoord);
     //check if move is in legalMoves
     bool isLegal(std::vector<Move> const &legalMoves);
     //closes the move

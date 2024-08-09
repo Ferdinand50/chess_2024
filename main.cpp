@@ -68,11 +68,11 @@ int main(int argc, char *argv[])
 							EndMove = false;
 
 							// initialize move
-							Move move(gamestate.m_chessBoard, moveCoord);
+							Move move(gamestate, moveCoord);
 							if(move.isLegal(legalMoves)){
 								//make the move
 								makeMove(gamestate, move);
-							// deselcted intial piece and select new one of same color
+							// deselect initial piece and select new one of same color
 							} else if(gamestate.isPieceTurn(xC, yC)){
 								moveCoord.xStart = xC;
 								moveCoord.yStart = yC;

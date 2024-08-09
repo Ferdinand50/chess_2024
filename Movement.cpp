@@ -225,6 +225,7 @@ void checkForPinsAndChecks(const GameState &gamestate){
                     //already second pin so no need to check for further pins
                     else
                         break;
+                
                 }
                 // If the position is occupied by an enemy piece
                 if (!gamestate.isPieceTurn(newX, newY)) {
@@ -330,7 +331,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         if(!piecePinned || (pinDirection == v1 || pinDirection == v2)){
             moveCoord.xEnd = x;
             moveCoord.yEnd = y + direction;
-            Move move(gamestate.m_chessBoard, moveCoord);
+            Move move(gamestate, moveCoord);
             legalMoves.push_back(move);
         }
     }
@@ -341,7 +342,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         if(!piecePinned || (pinDirection == v1 || pinDirection == v2)){
             moveCoord.xEnd = x;
             moveCoord.yEnd = y + direction*2;
-            Move move(gamestate.m_chessBoard, moveCoord);
+            Move move(gamestate, moveCoord);
             legalMoves.push_back(move);
         }
     }
@@ -352,7 +353,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
             moveCoord.xEnd = x + 1;
             moveCoord.yEnd = y + direction;
-            Move move(gamestate.m_chessBoard, moveCoord);
+            Move move(gamestate, moveCoord);
             legalMoves.push_back(move);
         }
     }
@@ -363,7 +364,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
             moveCoord.xEnd = x - 1;
             moveCoord.yEnd = y + direction;
-            Move move(gamestate.m_chessBoard, moveCoord);
+            Move move(gamestate, moveCoord);
             legalMoves.push_back(move);
         }
     }
@@ -395,7 +396,7 @@ void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
             if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
                 moveCoord.xEnd = newX;
                 moveCoord.yEnd = newY;
-                Move move(gamestate.m_chessBoard, moveCoord);
+                Move move(gamestate, moveCoord);
                 legalMoves.push_back(move);
             }
         }
@@ -428,14 +429,14 @@ void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
             if (gamestate.m_chessBoard[newY][newX] == 0) {
                 moveCoord.xEnd = newX;
                 moveCoord.yEnd = newY;
-                Move move(gamestate.m_chessBoard, moveCoord);
+                Move move(gamestate, moveCoord);
                 legalMoves.push_back(move);
             } else {
                 // If the position is occupied by an enemy piece, add the move and stop in this direction
                 if (!gamestate.isPieceTurn(newX, newY)) {
                     moveCoord.xEnd = newX;
                     moveCoord.yEnd = newY;
-                    Move move(gamestate.m_chessBoard, moveCoord);
+                    Move move(gamestate, moveCoord);
                     legalMoves.push_back(move);
                 }
                 // Stop in this direction regardless of whether the piece is friendly or enemy
@@ -473,14 +474,14 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
             if (gamestate.m_chessBoard[newY][newX] == 0) {
                 moveCoord.xEnd = newX;
                 moveCoord.yEnd = newY;
-                Move move(gamestate.m_chessBoard, moveCoord);
+                Move move(gamestate, moveCoord);
                 legalMoves.push_back(move);
             } else {
                 // If the position is occupied by an enemy piece, add the move and stop in this direction
                 if (!gamestate.isPieceTurn(newX, newY)) {
                     moveCoord.xEnd = newX;
                     moveCoord.yEnd = newY;
-                    Move move(gamestate.m_chessBoard, moveCoord);
+                    Move move(gamestate, moveCoord);
                     legalMoves.push_back(move);
                 }
                 // Stop in this direction regardless of whether the piece is friendly or enemy
@@ -541,7 +542,7 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
                 if(!gamestate.m_inCheck){
                     moveCoord.xEnd = newX;
                     moveCoord.yEnd = newY;
-                    Move move(gamestate.m_chessBoard, moveCoord);
+                    Move move(gamestate, moveCoord);
                     legalMoves.push_back(move);
                 }
             }
@@ -566,10 +567,9 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
 
 
 // Move class 
-//TODO: USE reference here
-Move::Move(int const chessBoard[8][8], MoveCoord moveCoord){
-    m_pieceMoved = chessBoard[moveCoord.yStart][moveCoord.xStart];
-    m_pieceTaken = chessBoard[moveCoord.yEnd][moveCoord.xEnd];
+Move::Move(const GameState &gamestate, MoveCoord moveCoord){
+    m_pieceMoved = gamestate.m_chessBoard[moveCoord.yStart][moveCoord.xStart];
+    m_pieceTaken = gamestate.m_chessBoard[moveCoord.yEnd][moveCoord.xEnd];
 
     m_start_x = moveCoord.xStart;
     m_start_y = moveCoord.yStart;
