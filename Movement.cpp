@@ -372,31 +372,43 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
 
 
 void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
-    //TODO: optimize this function
-    // Array to hold the possible knight moves
-    int knightMoves[8][2] = {
-        {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
-        {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
-    };
+    //check is piece is pinned
+    bool piecePinned = false;
 
-    // This can be initialized in the getLegalMoves function
-    MoveCoord moveCoord;
-    moveCoord.xStart = x;
-    moveCoord.yStart = y;
+    //check if piece is pinned
+    for (int i = gamestate.m_pins.size() - 1; i >= 0; --i) {
+        if (gamestate.m_pins[i][0] == x && gamestate.m_pins[i][1] == y) {
+            piecePinned = true;
+            break;
+        }
+    }
 
-    // Iterate over all possible knight moves
-    for (int i = 0; i < 8; ++i) {
-        int newX = x + knightMoves[i][0];
-        int newY = y + knightMoves[i][1];
+    if(!piecePinned){
+        // Array to hold the possible knight moves
+        int knightMoves[8][2] = {
+            {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+            {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+        };
 
-        // Check if the new position is within the bounds of the board
-        if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
-            // Check if the new position is either empty or contains an enemy piece
-            if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
-                moveCoord.xEnd = newX;
-                moveCoord.yEnd = newY;
-                Move move(gamestate, moveCoord);
-                legalMoves.push_back(move);
+        // This can be initialized in the getLegalMoves function
+        MoveCoord moveCoord;
+        moveCoord.xStart = x;
+        moveCoord.yStart = y;
+
+        // Iterate over all possible knight moves
+        for (int i = 0; i < 8; ++i) {
+            int newX = x + knightMoves[i][0];
+            int newY = y + knightMoves[i][1];
+
+            // Check if the new position is within the bounds of the board
+            if (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+                // Check if the new position is either empty or contains an enemy piece
+                if (gamestate.m_chessBoard[newY][newX] == 0 || !gamestate.isPieceTurn(newX, newY)) {
+                    moveCoord.xEnd = newX;
+                    moveCoord.yEnd = newY;
+                    Move move(gamestate, moveCoord);
+                    legalMoves.push_back(move);
+                }
             }
         }
     }
