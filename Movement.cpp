@@ -463,14 +463,30 @@ void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
 
 
 void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
+    //check is piece is pinned
+    bool piecePinned = false;
+    std::vector<int> pinDirection = {0, 0};
+
+    //check if piece is pinned
+    for (int i = gamestate.m_pins.size() - 1; i >= 0; --i) {
+        if (gamestate.m_pins[i][0] == x && gamestate.m_pins[i][1] == y) {
+            piecePinned = true;
+            pinDirection = {gamestate.m_pins[i][2], gamestate.m_pins[i][3]};
+            break;
+        }
+    }
+
     // This can be initialized in the getLegalMoves function
     MoveCoord moveCoord;
     moveCoord.xStart = x;
     moveCoord.yStart = y;
 
+    std::set<std::pair<int, int>> diagonal_r_down = {{1, 1}, {-1, -1}};
+    std::set<std::pair<int, int>> diagonal_r_up = {{1, -1}, {-1, 1}};
+
     // Directions the bishop can move in (top-right, top-left, bottom-right, bottom-left)
     int directions[4][2] = {
-        {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+        {1, 1}, {-1, -1}, {1, -1}, {-1, 1}
     };
 
     // Iterate over all possible directions
@@ -480,8 +496,10 @@ void getBishopMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
         int newX = x + dx;
         int newY = y + dy;
 
-        // Continue moving in the current direction until the end of the board or a piece is encountered
-        while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+        // Continue moving in the current direction until the end of the board or a piece is encountered and piece is not pinned or moves in or against pin direction
+        // //                     board                                piece pinned                      diagonal down right                                                                        diagonal up right    
+        while ((newX >= 0 && newX < 8 && newY >= 0 && newY < 8) && (!piecePinned || (diagonal_r_down.find({pinDirection[0], pinDirection[1]}) != diagonal_r_down.end() && i<2) || (diagonal_r_up.find({pinDirection[0], pinDirection[1]}) != diagonal_r_up.end() && i>1) )) {
+        //while ((newX >= 0 && newX < 8 && newY >= 0 && newY < 8) && (!piecePinned)) {
             // Check if the new position is empty
             if (gamestate.m_chessBoard[newY][newX] == 0) {
                 moveCoord.xEnd = newX;
