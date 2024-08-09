@@ -12,14 +12,6 @@
 //forward declaration
 class Move;
 
-//used to keep track of the pieces on the board in an efficient way
-struct PieceInfo{
-    int columm; //x
-    int row; //y
-    int type; //type of pieces in int
-
-};
-
 class GameState 
 {
 private:
@@ -39,25 +31,24 @@ private:
     const int WHITE_KING = 26;
 
 public:
-    //TODO: initialize members in constructor 
     // which turn is it
     bool m_whitesTurn;
     // one player is in check
-    mutable bool m_inCheck = false;
+    mutable bool m_inCheck;
     //game is over
-    mutable bool m_checkmate = false;
+    mutable bool m_checkmate;
     //game is stalled
-    mutable bool m_stalemate = false;
+    mutable bool m_stalemate;
+    //stores position of white King
+    mutable std::vector<int> m_whiteKingPosition;
+    //stores position of black King
+    mutable std::vector<int> m_blackKingPosition;
     //logger for undoing moves
-    std::stack<Move> moveLog;
+    std::stack<Move> m_moveLog;
     // Create a list of vectors, each containing 4 integers for containing pins (y, x, pin_direction_y, pin_direction_x)
     mutable std::vector<std::vector<int>> m_pins;
     // Create a list of vectors, each containing 4 integers for containing checks (y, x, pin_direction_y, pin_direction_x)
     mutable std::vector<std::vector<int>> m_checks;
-    //stores position of white King
-    mutable std::vector<int> m_whiteKingPosition = {7, 4};
-    //stores position of black King
-    mutable std::vector<int> m_blackKingPosition = {0, 4};
     //8x8 chess board
     int m_chessBoard[8][8] = {
         {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK},

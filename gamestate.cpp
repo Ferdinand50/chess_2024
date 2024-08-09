@@ -2,7 +2,7 @@
 
 
 // Constructor implementation
-GameState::GameState(): m_whitesTurn(true){
+GameState::GameState(): m_whitesTurn(true), m_inCheck(false), m_checkmate(false), m_stalemate(false), m_whiteKingPosition({7, 4}), m_blackKingPosition({0, 4}){
 
 }
 
@@ -35,3 +35,4 @@ void GameState::printBoard() const {
     }
     std::cout<<"-----------------------"<<std::endl;
 }
+

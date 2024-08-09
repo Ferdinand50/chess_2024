@@ -9,7 +9,7 @@ void makeMove(GameState &gamestate, Move move){
     //change turn of player
     gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
     //log selected move
-    gamestate.moveLog.push(move);
+    gamestate.m_moveLog.push(move);
 
     //update King position
     //white King
@@ -22,9 +22,9 @@ void makeMove(GameState &gamestate, Move move){
 
 void undoMove(GameState &gamestate){
     //check if log is not empty
-    if (!gamestate.moveLog.empty()) {
-        Move move = gamestate.moveLog.top();
-        gamestate.moveLog.pop();
+    if (!gamestate.m_moveLog.empty()) {
+        Move move = gamestate.m_moveLog.top();
+        gamestate.m_moveLog.pop();
 
         gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = move.m_pieceMoved;
         gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceTaken;
@@ -105,7 +105,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
                     }
                 }
             }
-            //TODO: implement caslt rights
+            //TODO: implement castle rights
             //gs.currentCastleRights = tempCastleRights
         }
         //double check king has to move

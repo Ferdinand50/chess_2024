@@ -21,7 +21,6 @@ struct MoveCoord{
     int yEnd;
 };
 
-
 class Move{
 public:
     int m_pieceMoved;
@@ -34,11 +33,9 @@ public:
 
 private:
     
-    
 
 public:
     //constructor
-    //TODO: Use reference
     Move(const GameState &gamestate, MoveCoord moveCoord);
     //check if move is in legalMoves
     bool isLegal(std::vector<Move> const &legalMoves);
@@ -48,7 +45,7 @@ public:
 
 //makes a move
 void makeMove(GameState &gamestate, Move move);
-//undoes the lastest move
+//undoes the latest move
 void undoMove(GameState &gamestate);
 //gets the valid moves for the current gamestate
 void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoreticalMoves, const GameState &gamestate);
