@@ -304,7 +304,6 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         if (gamestate.m_pins[i][0] == x && gamestate.m_pins[i][1] == y) {
             piecePinned = true;
             pinDirection = {gamestate.m_pins[i][2], gamestate.m_pins[i][3]};
-            // gamestate.m_pins.erase(gamestate.m_pins.begin() + i);  // Remove the element at index i
             break;
         }
     }
@@ -347,7 +346,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         }
     }
 
-    //check if there is an attack square and if there is an enemey piece on it (right)
+    //check if there is an attack square and if there is an enemy piece on it (right)
     if(!(y== 7 || y==0 || x==7) && gamestate.m_chessBoard[y+direction][x+1] != 0 && !gamestate.isPieceTurn(x+1,y+direction)){
         //check if piece is pinned or can move in pin direction
         if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
@@ -358,7 +357,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         }
     }
 
-    //check if there is an attack square and if there is an enemey piece on it (left)
+    //check if there is an attack square and if there is an enemy piece on it (left)
     if(!(y== 7 || y==0 || x==0) && gamestate.m_chessBoard[y+direction][x-1] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
         //check if piece is pinned or can move in pin direction
         if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
@@ -406,7 +405,19 @@ void getKnightMoves(std::vector<Move> &legalMoves, const GameState &gamestate, i
 
 
 void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
-    // This can be initialized in the getLegalMoves function
+    //check is piece is pinned
+    bool piecePinned = false;
+    std::vector<int> pinDirection = {0, 0};
+
+    //check if piece is pinned
+    for (int i = gamestate.m_pins.size() - 1; i >= 0; --i) {
+        if (gamestate.m_pins[i][0] == x && gamestate.m_pins[i][1] == y) {
+            piecePinned = true;
+            pinDirection = {gamestate.m_pins[i][2], gamestate.m_pins[i][3]};
+            break;
+        }
+    }
+
     MoveCoord moveCoord;
     moveCoord.xStart = x;
     moveCoord.yStart = y;
@@ -423,8 +434,9 @@ void getRookMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
         int newX = x + dx;
         int newY = y + dy;
 
-        // Continue moving in the current direction until the end of the board or a piece is encountered
-        while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
+        // Continue moving in the current direction until the end of the board or a piece is encountered and piece is not pinned or move in pin direction
+        //                     board                                piece pinned                       vertical                                                    horizontal  
+        while ((newX >= 0 && newX < 8 && newY >= 0 && newY < 8) && (!piecePinned || (i<2 && pinDirection[0] == 0 && abs(pinDirection[1]) == 1) || (i>1 && abs(pinDirection[0]) == 1 && pinDirection[1] == 0))) {
             // Check if the new position is empty
             if (gamestate.m_chessBoard[newY][newX] == 0) {
                 moveCoord.xEnd = newX;
