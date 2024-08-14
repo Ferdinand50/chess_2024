@@ -14,6 +14,7 @@ int main(int argc, char *argv[])
 {
 	//TODO: there seems to be a back which moves pieces sometimes (more investigation needed)
 	//TODO: suddenly spawn queens need fix
+	//TODO: implement this file as an app with object orientated programming
 	Screen screen;
 	if(screen.init()==false){
 		cout<<"Error initialising SDL."<<endl;
@@ -21,28 +22,27 @@ int main(int argc, char *argv[])
 	}
 
     GameState gamestate;
-
-    bool running = true;
+    MoveCoord moveCoord;
     SDL_Event event;
-	bool StartMove =true;
-	bool EndMove = false;
+	//handles AI moves
+	AI_Handler handler_AI_moves;
+	std::vector<Move> legalMoves;
+	std::vector<Move> theoreticalMoves;
 	int mx;
 	int my;
-	int square = screen.SCREEN_WIDTH/8;
 	int xC;
 	int yC;
-	MoveCoord moveCoord;
+	bool humanTurn;
 
 	bool gameover = false;
     bool WhiteHuman = true;
     bool BlackHuman = false;
-	bool humanTurn;
-	// bool moveMade = false;
-	//handles AI moves
-	AI_Handler handler_AI_moves;
-
-	std::vector<Move> legalMoves;
-	std::vector<Move> theoreticalMoves;
+	int square = screen.SCREEN_WIDTH/8;
+	bool StartMove =true;
+	bool EndMove = false;
+	bool running = true;
+	
+	//get legal moves for gamestate
 	getLegalMoves(legalMoves, theoreticalMoves, gamestate);
 
     // Draw init board
@@ -101,10 +101,22 @@ int main(int argc, char *argv[])
 					}
 
 				case SDL_KEYDOWN:
+					//undo Move
 					if (event.key.keysym.sym == SDLK_z) {
 						undoMove(gamestate);
 					}
-				//TODO: case reset game
+					//reset game
+					if (event.key.keysym.sym == SDLK_r) {
+						//delete gamestate
+						gamestate.~GameState(); 
+						//place new gamestate object in memory of old object
+						new (&gamestate) GameState(); 
+						getLegalMoves(legalMoves, theoreticalMoves, gamestate);
+						StartMove = true;
+						EndMove = false;
+						moveCoord = MoveCoord();
+						gameover = false;
+					}
 			}
 		}
 
