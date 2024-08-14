@@ -41,6 +41,8 @@ void undoMove(GameState &gamestate){
         //change turn of player
         gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 
+        //TODO: undo pawn promotion (seems to work without implementation)
+
         // Update King position
         // White King
         if(move.m_pieceMoved == 26) {
@@ -59,7 +61,7 @@ void undoMove(GameState &gamestate){
 void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoreticalMoves, const GameState &gamestate){
     // Clear the elements of legalMoves vector
     legalMoves.clear();
-    //TODO: implement caslt rights
+    //TODO: implement castle rights
     //tempCastleRights = backend.CastleRights(gs.currentCastleRights.bqs, gs.currentCastleRights.bks, gs.currentCastleRights.wqs, gs.currentCastleRights.wks)
     //update check and pins
     checkForPinsAndChecks(gamestate);
@@ -106,7 +108,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
             //deletes moves which are not legal
             //backwards iteration
             for (int i = static_cast<int>(theoreticalMoves.size()) - 1; i >= 0; --i){
-                //move doesnt move king so it must block or capture
+                //move doesn't move king so it must block or capture
                 //TODO: check if rank and file is correct x and y
                 if (theoreticalMoves[i].m_pieceMoved != 16 && theoreticalMoves[i].m_pieceMoved != 26) {
                     //move doesnt block or capture
@@ -553,7 +555,7 @@ void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, in
 }
 
 
-
+//TODO: king makes illegal moves with pawns attacks IMPORTANT
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
     // This can be initialized in the getLegalMoves function
     MoveCoord moveCoord;
@@ -587,7 +589,7 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
                     gamestate.m_blackKingPosition[0] = newY;  //y
                     gamestate.m_blackKingPosition[1] = newX;  //x
                 }
-                //TODO: do I need to change color of player whos turn is it?
+                //TODO: do I need to change color of player who's turn is it?
                 //check if king is in check
                 checkForPinsAndChecks(gamestate);
                 //not in check so move is valid
@@ -627,6 +629,10 @@ Move::Move(const GameState &gamestate, MoveCoord moveCoord){
     m_start_y = moveCoord.yStart;
     m_end_x = moveCoord.xEnd;
     m_end_y = moveCoord.yEnd;
+}
+
+//overload
+Move::Move(){
 }
 
 

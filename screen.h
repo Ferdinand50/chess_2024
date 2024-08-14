@@ -39,7 +39,7 @@ public:
     void update(const GameState &gamestate, const std::vector<Move> &legalMoves, int x, int y, bool b_drawHighlights);
     //draws the board
     void draw_board();
-    //draw possile moves of a piece
+    //draw possible moves of a piece
     void drawHighlights(const std::vector<Move> &legalMoves, int x, int y);
     //draw pieces on the board
     void drawPieces(const GameState &gamestate);

@@ -38,6 +38,8 @@ private:
 public:
     //constructor
     Move(const GameState &gamestate, MoveCoord moveCoord);
+    //constructor overload
+    Move();
     //check if move is in legalMoves
     bool isLegal(std::vector<Move> const &legalMoves);
     //closes the move
