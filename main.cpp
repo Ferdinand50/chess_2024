@@ -12,9 +12,10 @@
 
 int main(int argc, char *argv[])
 {
-	//TODO: there seems to be a back which moves pieces sometimes (more investigation needed)
-	//TODO: suddenly spawn queens need fix
+	//FIXME: there seems to be a bug which moves pieces sometimes (more investigation needed)
+	//FIXME: suddenly spawn queens need fix
 	//TODO: implement this file as an app with object orientated programming
+	//TODO: implement sound effects
 	Screen screen;
 	if(screen.init()==false){
 		cout<<"Error initialising SDL."<<endl;
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
 
 	bool QUIT = false;
 	while (!QUIT) {
-		humanTurn = (gamestate.m_whitesTurn and WhiteHuman) || (!gamestate.m_whitesTurn and BlackHuman);
+		humanTurn = (gamestate.m_whitesTurn && WhiteHuman) || (!gamestate.m_whitesTurn && BlackHuman);
 		//TODO: does PollEvent work like intended? 
 		//maybe runs code whenever an event occurs 
 		while(SDL_PollEvent(&event)){
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
 				//move pieces via mouse clicks
 				case SDL_MOUSEBUTTONDOWN:
                     //only can make moves if game is not over or players turn
-                    if (!gameover and humanTurn){
+                    if (!gameover && humanTurn){
 						SDL_GetMouseState(&mx,&my);
 						xC = mx/square;
 						yC = my/square;
@@ -99,14 +100,16 @@ int main(int argc, char *argv[])
 							}
 						}
 					}
-
+					break;  
 				case SDL_KEYDOWN:
 					//undo Move
 					if (event.key.keysym.sym == SDLK_z) {
+						LOG("[LOG]: Undoing a move.");
 						undoMove(gamestate);
 					}
 					//reset game
-					if (event.key.keysym.sym == SDLK_r) {
+					else if (event.key.keysym.sym == SDLK_r) {
+						LOG("[LOG]: Resetting the game.");
 						//delete gamestate
 						gamestate.~GameState(); 
 						//place new gamestate object in memory of old object
@@ -117,6 +120,7 @@ int main(int argc, char *argv[])
 						moveCoord = MoveCoord();
 						gameover = false;
 					}
+					break; 
 			}
 		}
 

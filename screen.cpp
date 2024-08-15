@@ -8,7 +8,7 @@ Screen::Screen() :
 
 bool Screen::init() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        cout << "SDL init failed." << endl;
+        LOG("[ERROR]: SDL init failed.");
         return false;
     }
 
@@ -17,13 +17,14 @@ bool Screen::init() {
         SCREEN_WIDTH, SDL_WINDOW_SHOWN);
 
     if (m_window == NULL) {
+        LOG("[ERROR]: Could not create window.");
         SDL_Quit();
         return false;
     }
 
     m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (m_renderer == NULL) {
-        cout << "Could not create renderer" << endl;
+        LOG("[ERROR]: Could not create renderer.");
         SDL_DestroyWindow(m_window);
         SDL_Quit();
         return false;
@@ -47,7 +48,7 @@ bool Screen::init() {
 void Screen::precomputeBoard() {
     m_boardTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_WIDTH);
     if (!m_boardTexture) {
-        std::cerr << "Failed to create board texture! SDL_Error: " << SDL_GetError() << std::endl;
+        LOG("[ERROR]: Failed to create board texture! SDL_Error.");
         return;
     }
 
@@ -97,7 +98,8 @@ void Screen::createTextures() {
             m_textures[i] = SDL_CreateTextureFromSurface(m_renderer, m_images[i]);
             SDL_FreeSurface(m_images[i]);
             if (!m_textures[i]) {
-                std::cerr << "Failed to create texture for piece " << i << "! SDL_Error: " << SDL_GetError() << std::endl;
+                LOG("[ERROR]: Failed to create texture for piece " << i << "!");
+                std::cerr << "" << SDL_GetError() << std::endl;
             }
         }
     }
@@ -163,6 +165,7 @@ void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMo
 }
 
 void Screen::close() {
+    LOG("[LOG]: Closing the screen.");
     for (int i = 0; i < 12; i++) {
         if (m_textures[i]) {
             SDL_DestroyTexture(m_textures[i]);

@@ -122,7 +122,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
         }
         //double check king has to move
         else
-            //TODO: fix king moves
+            //FIXME: fix king moves
             getKingMoves(theoreticalMoves, gamestate, king_x, king_y);
     }
 
@@ -555,7 +555,7 @@ void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, in
 }
 
 
-//TODO: king makes illegal moves with pawns attacks IMPORTANT
+//FIXME: king makes illegal moves with pawns attacks IMPORTANT
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
     // This can be initialized in the getLegalMoves function
     MoveCoord moveCoord;
