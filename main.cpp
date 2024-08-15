@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
 		humanTurn = (gamestate.m_whitesTurn && WhiteHuman) || (!gamestate.m_whitesTurn && BlackHuman);
 		//TODO: does PollEvent work like intended? 
 		//maybe runs code whenever an event occurs 
-		while(SDL_PollEvent(&event)){
+		//RUNS when every event is happening like moving the mouse
+		if(SDL_WaitEvent(&event)){
 			switch(event.type){
 				case SDL_QUIT:
 					QUIT=true;
@@ -141,6 +142,7 @@ int main(int argc, char *argv[])
         if(gamestate.m_checkmate){
             gameover = true;
             if(gamestate.m_whitesTurn){
+				//TODO: move this in screen update
 				//TODO: draw on the screen and remove quit
 				cout<<"Black wins by Checkmate."<<endl;
 				QUIT=true;
@@ -158,8 +160,6 @@ int main(int argc, char *argv[])
 			QUIT=true;
 		}
 		
-
-
 		//update screen
 		screen.update(gamestate, legalMoves, xC, yC, EndMove);
 

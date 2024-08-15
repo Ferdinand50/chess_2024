@@ -17,26 +17,27 @@
 #define LOG(x)
 #endif
 
+#define EMPTY 0
+#define blackPawn 11
+#define blackRook 12
+#define blackKnight 13
+#define blackBishop 14
+#define blackQueen 15
+#define blackKing 16
+#define whitePawn 21
+#define whiteRook 22
+#define whiteKnight 23
+#define whiteBishop 24
+#define whiteQueen 25
+#define whiteKing 26
+
+
 //forward declaration
 class Move;
 
 class GameState 
 {
 private:
-    // Constants for piece types
-    const int EMPTY = 0;
-    const int BLACK_PAWN = 11;
-    const int BLACK_ROOK = 12;
-    const int BLACK_KNIGHT = 13;
-    const int BLACK_BISHOP = 14;
-    const int BLACK_QUEEN = 15;
-    const int BLACK_KING = 16;
-    const int WHITE_PAWN = 21;
-    const int WHITE_ROOK = 22;
-    const int WHITE_KNIGHT = 23;
-    const int WHITE_BISHOP = 24;
-    const int WHITE_QUEEN = 25;
-    const int WHITE_KING = 26;
 
 public:
     // which turn is it
@@ -60,14 +61,14 @@ public:
     mutable std::vector<std::vector<int>> m_checks;
     //8x8 chess board
     int m_chessBoard[8][8] = {
-        {BLACK_ROOK, BLACK_KNIGHT, BLACK_BISHOP, BLACK_QUEEN, BLACK_KING, BLACK_BISHOP, BLACK_KNIGHT, BLACK_ROOK},
-        {BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN, BLACK_PAWN},
+        {blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},
+        {blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn, blackPawn},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
         {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-        {WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN, WHITE_PAWN},
-        {WHITE_ROOK, WHITE_KNIGHT, WHITE_BISHOP, WHITE_QUEEN, WHITE_KING, WHITE_BISHOP, WHITE_KNIGHT, WHITE_ROOK}
+        {whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn, whitePawn},
+        {whiteRook, whiteKnight, whiteBishop, whiteQueen, whiteKing, whiteBishop, whiteKnight, whiteRook}
     };
 
 public:
