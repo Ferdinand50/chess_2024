@@ -12,8 +12,7 @@
 
 int main(int argc, char *argv[])
 {
-	//FIXME: there seems to be a bug which moves pieces sometimes (more investigation needed)
-	//FIXME: suddenly spawn queens need fix
+	//FIXME: king moves
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects
 	Screen screen;
@@ -138,6 +137,28 @@ int main(int argc, char *argv[])
 				//TODO: implement handling no legal moves (to nothing?)
 			}
 		}
+
+        if(gamestate.m_checkmate){
+            gameover = true;
+            if(gamestate.m_whitesTurn){
+				//TODO: draw on the screen and remove quit
+				cout<<"Black wins by Checkmate."<<endl;
+				QUIT=true;
+			}
+            else{
+				//TODO: draw on the screen and remove quit
+				cout<<"White wins by Checkmate."<<endl;
+				QUIT=true;
+			}
+
+		} else if (gamestate.m_checkmate){
+			gameover = true;
+			//TODO: draw on the screen and remove quit
+			cout<<"Stalemate."<<endl;
+			QUIT=true;
+		}
+		
+
 
 		//update screen
 		screen.update(gamestate, legalMoves, xC, yC, EndMove);
