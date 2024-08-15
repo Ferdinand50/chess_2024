@@ -170,7 +170,7 @@ public:
     //constructor
     AI_Handler();
     //returns the best move of the AI opponent
-    Move returnOpponentsMove(const GameState &gamestate, const std::vector<Move> &legalMoves);
+    Move returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
     //closing

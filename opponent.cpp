@@ -1,11 +1,30 @@
 #include "opponent.h"
 
 
-Move AI_Handler::returnOpponentsMove(const GameState &gamestate, const std::vector<Move> &legalMoves){
-    float score;
-    score = returnScore(gamestate);
-    LOG(score);
-    return legalMoves[0];
+Move AI_Handler::returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves){
+    Move bestMove;
+    //TODO: change this accordingly
+    float bestScore = 1000;
+    float currentScore;
+
+    for (const Move &move : legalMoves) {
+        //Apply the move to the game state 
+        makeMove(gamestate, move);
+
+        //Evaluate the new game state
+        //FIXME: it seem there is a bug with returnScore
+        currentScore = returnScore(gamestate);
+        LOG(currentScore);
+
+        //Update bestMove if the current move has a better score
+        if (currentScore < bestScore) {
+            bestScore = currentScore;
+            bestMove = move;
+        }
+        //undoMove
+        undoMove(gamestate);
+    }
+    return bestMove;
 }
 
 AI_Handler::AI_Handler() {
@@ -18,6 +37,14 @@ float AI_Handler::returnScore(const GameState &gamestate) {
     int piece;
     int pieceScore;
     int positionScore;
+
+    //TODO:check if score is correct 
+    //return score if checkmate
+    if(gamestate.m_checkmate)
+        return -1000;
+    //return score if stalemate
+    else if(gamestate.m_stalemate)
+        return 0;
 
     //evaluate the board
    for (int y = 0; y < 8; ++y) {
@@ -56,12 +83,16 @@ float AI_Handler::returnScore(const GameState &gamestate) {
 
                 //white pieces have a positive score
                 if (pieceScore>0){
-                    whiteScore += pieceScore + positionScore*position_weight;
+                    //TODO: enable position score
+                    //whiteScore += pieceScore + positionScore*position_weight;
+                    whiteScore += pieceScore;
                 }
                 //black pieces have a negative score
                 else{
+                    //TODO: enable position score
                     //negative since positionScore is positive
-                    blackScore += pieceScore - positionScore*position_weight;
+                    // blackScore += pieceScore - positionScore*position_weight;
+                    blackScore += pieceScore;
                 }
             }
         }
