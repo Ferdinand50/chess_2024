@@ -17,6 +17,7 @@
 #define LOG(x)
 #endif
 
+//TODO: rewrite codebase to support these defines
 #define EMPTY 0
 #define blackPawn 11
 #define blackRook 12
