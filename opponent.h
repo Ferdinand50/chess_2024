@@ -173,9 +173,6 @@ public:
     Move returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
-    //closing
-    void close();
-
 };
 
 

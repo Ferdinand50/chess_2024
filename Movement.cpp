@@ -186,9 +186,9 @@ void CheckmateandStalemate(const std::vector<Move> &legalMoves, const GameState 
     if(legalMoves.size()==0){
         if(gamestate.m_inCheck)
             gamestate.m_checkmate = true;
-    }
         else if (!gamestate.m_inCheck)
             gamestate.m_stalemate = true;
+    }
 }
 
 

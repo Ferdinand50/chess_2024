@@ -9,6 +9,7 @@
 #include "Movement.h"
 #include "opponent.h"
 
+//TODO: remove using namespace std everywhere
 
 int main(int argc, char *argv[])
 {
@@ -134,6 +135,7 @@ int main(int argc, char *argv[])
 				makeMove(gamestate, opponentMove);
 				//update legal moves
 				getLegalMoves(legalMoves, theoreticalMoves, gamestate);
+				LOG(handler_AI_moves.returnScore(gamestate));
 			} else {
 				//TODO: implement handling no legal moves (to nothing?)
 			}
@@ -153,7 +155,7 @@ int main(int argc, char *argv[])
 				QUIT=true;
 			}
 
-		} else if (gamestate.m_checkmate){
+		} else if (gamestate.m_stalemate){
 			gameover = true;
 			//TODO: draw on the screen and remove quit
 			cout<<"Stalemate."<<endl;

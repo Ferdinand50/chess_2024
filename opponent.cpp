@@ -1,5 +1,7 @@
 #include "opponent.h"
 
+AI_Handler::AI_Handler() {
+}
 
 Move AI_Handler::returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves){
     Move bestMove;
@@ -12,9 +14,7 @@ Move AI_Handler::returnOpponentsMove(GameState &gamestate, const std::vector<Mov
         makeMove(gamestate, move);
 
         //Evaluate the new game state
-        //FIXME: it seem there is a bug with returnScore
         currentScore = returnScore(gamestate);
-        LOG(currentScore);
 
         //Update bestMove if the current move has a better score
         if (currentScore < bestScore) {
@@ -27,10 +27,6 @@ Move AI_Handler::returnOpponentsMove(GameState &gamestate, const std::vector<Mov
     return bestMove;
 }
 
-AI_Handler::AI_Handler() {
-}
-
-
 float AI_Handler::returnScore(const GameState &gamestate) {
     float whiteScore = 0;
     float blackScore = 0;
@@ -40,11 +36,16 @@ float AI_Handler::returnScore(const GameState &gamestate) {
 
     //TODO:check if score is correct 
     //return score if checkmate
-    if(gamestate.m_checkmate)
+    if(gamestate.m_checkmate){
+        LOG("[LOG]: Checkmate scoring.");
         return -1000;
+    }
     //return score if stalemate
-    else if(gamestate.m_stalemate)
+    else if(gamestate.m_stalemate){
+        LOG("[LOG]: Stalemate scoring.");
         return 0;
+    }
+        
 
     //evaluate the board
    for (int y = 0; y < 8; ++y) {
