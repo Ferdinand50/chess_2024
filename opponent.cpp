@@ -3,6 +3,12 @@
 AI_Handler::AI_Handler() {
 }
 
+Move AI_Handler::returnBestMove(GameState &gamestate, const std::vector<Move> &legalMoves){
+    float score = returnBestMoveMinMax(gamestate, legalMoves, searchDepth);
+    return bestMoveAI;
+}
+
+//deprecated 
 Move AI_Handler::returnOpponentsMove1StepLook(GameState &gamestate, const std::vector<Move> &legalMoves){
     Move bestMove;
     //TODO: change this accordingly
@@ -87,6 +93,75 @@ Move AI_Handler::returnOpponentsMove2StepLook(GameState &gamestate, const std::v
     return bestBlackMove;
 }
 
+
+float AI_Handler::returnBestMoveMinMax(GameState &gamestate, const std::vector<Move> &legalMoves, int depth) {
+    int turnMultiplier = gamestate.m_whitesTurn ? 1 : -1;
+    float currentScore;
+    float score;
+    float maxScore;
+    float minScore;
+
+    //evaluate board
+    if(depth == 0){
+        //positive if white negative if black
+        if(gamestate.m_checkmate){
+            currentScore = checkmateScore * turnMultiplier;
+        }
+        //if stalemate is possible score will set to neutral, there move will be only made if own score is worse than 0
+        else if(gamestate.m_stalemate){
+            currentScore = stalemateScore;
+        }
+        //score the current moves made
+        else {
+            currentScore = turnMultiplier * returnScore(gamestate);
+        }
+        return currentScore;
+    }
+    //whites layer
+    if(gamestate.m_whitesTurn){
+        maxScore = -checkmateScore;
+        //TODO: remove theoreticalMoves
+        std::vector<Move> localLegalMoves;
+        std::vector<Move> localTheoreticalMoves;
+        getLegalMoves(localLegalMoves, localTheoreticalMoves, gamestate);
+        for (const Move &localMove : localLegalMoves) {
+            makeMove(gamestate, localMove);
+            score = returnBestMoveMinMax(gamestate, localLegalMoves, depth-1);
+            if(score>maxScore){
+                maxScore = score;
+                //end search
+                if(depth == searchDepth){
+                    bestMoveAI = localMove;
+                }
+            }
+            undoMove(gamestate);
+        }
+        return maxScore;
+    }
+    //black layer
+   if(!gamestate.m_whitesTurn){
+        minScore = checkmateScore;
+        //TODO: remove theoreticalMoves
+        std::vector<Move> localLegalMoves;
+        std::vector<Move> localTheoreticalMoves;
+        getLegalMoves(localLegalMoves, localTheoreticalMoves, gamestate);
+        for (const Move &localMove : localLegalMoves) {
+            makeMove(gamestate, localMove);
+            score = returnBestMoveMinMax(gamestate, localLegalMoves, depth-1);
+            if(score<minScore){
+                minScore = score;
+                //end search
+                if(depth == searchDepth){
+                    bestMoveAI = localMove;
+                }
+            }
+            undoMove(gamestate);
+        }
+        return minScore;
+    }
+    LOG("[LOG]: Error in returnBestMoveMinMax function.");
+    return 0.0f;
+}
 
 
 float AI_Handler::returnScore(const GameState &gamestate) {

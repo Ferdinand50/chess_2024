@@ -14,6 +14,8 @@
 int main(int argc, char *argv[])
 {
 	//FIXME: king moves
+	//FIXME: searchDepth of 5 ends in checkMate 
+	//FIXME: searchDepth of 4 results in stupid AI behaviour
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects
 	Screen screen;
@@ -129,7 +131,7 @@ int main(int argc, char *argv[])
 		if(!gameover && !humanTurn){
 			Move opponentMove;
 			// get best AI move from legal moves
-			opponentMove = handler_AI_moves.returnOpponentsMove2StepLook(gamestate, legalMoves);
+			opponentMove = handler_AI_moves.returnBestMove(gamestate, legalMoves);
 			if(legalMoves.size() != 0){
 				//make AI move
 				makeMove(gamestate, opponentMove);
