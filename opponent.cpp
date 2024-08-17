@@ -3,7 +3,7 @@
 AI_Handler::AI_Handler() {
 }
 
-Move AI_Handler::returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves){
+Move AI_Handler::returnOpponentsMove1StepLook(GameState &gamestate, const std::vector<Move> &legalMoves){
     Move bestMove;
     //TODO: change this accordingly
     float bestScore = 1000;
@@ -84,16 +84,14 @@ float AI_Handler::returnScore(const GameState &gamestate) {
 
                 //white pieces have a positive score
                 if (pieceScore>0){
-                    //TODO: enable position score
-                    //whiteScore += pieceScore + positionScore*position_weight;
-                    whiteScore += pieceScore;
+                    whiteScore += pieceScore + positionScore*position_weight;
+                    //whiteScore += pieceScore;
                 }
                 //black pieces have a negative score
                 else{
-                    //TODO: enable position score
                     //negative since positionScore is positive
-                    // blackScore += pieceScore - positionScore*position_weight;
-                    blackScore += pieceScore;
+                    blackScore += pieceScore - positionScore*position_weight;
+                    //blackScore += pieceScore;
                 }
             }
         }

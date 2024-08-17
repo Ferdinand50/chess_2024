@@ -129,13 +129,13 @@ int main(int argc, char *argv[])
 		if(!gameover && !humanTurn){
 			Move opponentMove;
 			// get best AI move from legal moves
-			opponentMove = handler_AI_moves.returnOpponentsMove(gamestate, legalMoves);
+			opponentMove = handler_AI_moves.returnOpponentsMove1StepLook(gamestate, legalMoves);
 			if(legalMoves.size() != 0){
 				//make AI move
 				makeMove(gamestate, opponentMove);
 				//update legal moves
 				getLegalMoves(legalMoves, theoreticalMoves, gamestate);
-				LOG(handler_AI_moves.returnScore(gamestate));
+				// LOG(handler_AI_moves.returnScore(gamestate));
 			} else {
 				//TODO: implement handling no legal moves (to nothing?)
 			}

@@ -169,8 +169,8 @@ private:
 public:
     //constructor
     AI_Handler();
-    //returns the best move of the AI opponent
-    Move returnOpponentsMove(GameState &gamestate, const std::vector<Move> &legalMoves);
+    //returns the best move of the AI opponent with 1 step look up
+    Move returnOpponentsMove1StepLook(GameState &gamestate, const std::vector<Move> &legalMoves);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
 };

@@ -60,7 +60,7 @@ void Screen::precomputeBoard() {
             m_rect.x = j * SCREEN_WIDTH / 8;
             m_rect.y = i * SCREEN_WIDTH / 8;
             if (toggle_color)
-                SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
+                SDL_SetRenderDrawColor(m_renderer, 90, 90, 90, 255);
             else
                 SDL_SetRenderDrawColor(m_renderer, 190, 190, 190, 255);
             SDL_RenderFillRect(m_renderer, &m_rect);
