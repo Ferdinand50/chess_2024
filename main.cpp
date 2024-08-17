@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
 		if(!gameover && !humanTurn){
 			Move opponentMove;
 			// get best AI move from legal moves
-			opponentMove = handler_AI_moves.returnOpponentsMove1StepLook(gamestate, legalMoves);
+			opponentMove = handler_AI_moves.returnOpponentsMove2StepLook(gamestate, legalMoves);
 			if(legalMoves.size() != 0){
 				//make AI move
 				makeMove(gamestate, opponentMove);

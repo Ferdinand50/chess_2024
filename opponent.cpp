@@ -9,6 +9,19 @@ Move AI_Handler::returnOpponentsMove1StepLook(GameState &gamestate, const std::v
     float bestScore = 1000;
     float currentScore;
 
+    //TODO: implement this correctly
+    // //TODO:check if score is correct 
+    // //return score if checkmate
+    // if(gamestate.m_checkmate){
+    //     LOG("[LOG]: Checkmate scoring.");
+    //     return -checkmateScore;
+    // }
+    // //return score if stalemate
+    // else if(gamestate.m_stalemate){
+    //     LOG("[LOG]: Stalemate scoring.");
+    //     return stalemateScore;
+    // }
+
     for (const Move &move : legalMoves) {
         //Apply the move to the game state 
         makeMove(gamestate, move);
@@ -27,25 +40,61 @@ Move AI_Handler::returnOpponentsMove1StepLook(GameState &gamestate, const std::v
     return bestMove;
 }
 
+
+Move AI_Handler::returnOpponentsMove2StepLook(GameState &gamestate, const std::vector<Move> &legalMoves){
+    Move bestBlackMove;
+    float blackMaxScore = -checkmateScore;
+    int turnMultiplier = gamestate.m_whitesTurn ? 1 : -1;
+    float currentScore;
+
+    //black moves
+    for (const Move &move : legalMoves) {
+        //Apply the move to the game state 
+        makeMove(gamestate, move);
+        //TODO: remove theoreticalMoves
+        std::vector<Move> legalMovesOpponent = legalMoves;
+        std::vector<Move> theoreticalMoves = legalMoves;
+        getLegalMoves(legalMovesOpponent, theoreticalMoves, gamestate);
+        float whiteMaxScore = -checkmateScore;
+        //white moves
+        for (const Move &opponentMove : legalMovesOpponent) {
+            turnMultiplier = 1;
+            makeMove(gamestate, opponentMove);
+            //evaluate
+            if(gamestate.m_checkmate){
+                currentScore = checkmateScore;
+            }
+            //if stalemate is possible score will set to neutral, there move will be only made if own score is worse than 0
+            else if(gamestate.m_stalemate){
+                currentScore = stalemateScore;
+            }
+            //score the current moves made
+            else {
+                currentScore = turnMultiplier * returnScore(gamestate);
+            }
+            if( currentScore > whiteMaxScore){
+                whiteMaxScore = currentScore;
+            }
+            undoMove(gamestate);
+        }
+        turnMultiplier = -1;
+        if (blackMaxScore < turnMultiplier * whiteMaxScore){
+            blackMaxScore = turnMultiplier * whiteMaxScore;
+            bestBlackMove = move;
+        }
+        undoMove(gamestate);
+    }
+    return bestBlackMove;
+}
+
+
+
 float AI_Handler::returnScore(const GameState &gamestate) {
     float whiteScore = 0;
     float blackScore = 0;
     int piece;
     int pieceScore;
     int positionScore;
-
-    //TODO:check if score is correct 
-    //return score if checkmate
-    if(gamestate.m_checkmate){
-        LOG("[LOG]: Checkmate scoring.");
-        return -1000;
-    }
-    //return score if stalemate
-    else if(gamestate.m_stalemate){
-        LOG("[LOG]: Stalemate scoring.");
-        return 0;
-    }
-        
 
     //evaluate the board
    for (int y = 0; y < 8; ++y) {

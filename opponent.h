@@ -16,6 +16,10 @@ private:
     int depth = 3;
     //weight of position of pieces for evaluation score
     float position_weight = 0.1;
+    //score for a checkmate
+    int checkmateScore = 1000;
+    //score for a stalemate
+    int stalemateScore = 0;
     //map to get the score of a piece
     std::map<int, int> PieceScoreMap = {
         {whitePawn, 1},
@@ -171,6 +175,8 @@ public:
     AI_Handler();
     //returns the best move of the AI opponent with 1 step look up
     Move returnOpponentsMove1StepLook(GameState &gamestate, const std::vector<Move> &legalMoves);
+    //returns the best move of the AI opponent with 2 step look up (does only work is black is AI)
+    Move returnOpponentsMove2StepLook(GameState &gamestate, const std::vector<Move> &legalMoves);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
 };
