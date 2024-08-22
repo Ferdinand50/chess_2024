@@ -31,6 +31,12 @@
 #define whiteBishop 24
 #define whiteQueen 25
 #define whiteKing 26
+#define Pawn 1
+#define Rook 2
+#define Knight 3
+#define Bishop 4
+#define Queen 5
+#define King 6
 
 
 //forward declaration
@@ -60,6 +66,7 @@ public:
     mutable std::vector<std::vector<int>> m_pins; 
     // Create a list of vectors, each containing 4 integers for containing checks (y, x, pin_direction_y, pin_direction_x)
     mutable std::vector<std::vector<int>> m_checks;
+    //TODO: this can be optimized, use different type of array make it 1d?
     //8x8 chess board
     int m_chessBoard[8][8] = {
         {blackRook, blackKnight, blackBishop, blackQueen, blackKing, blackBishop, blackKnight, blackRook},

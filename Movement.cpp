@@ -211,8 +211,8 @@ void checkForPinsAndChecks(const GameState &gamestate){
         king_x = gamestate.m_blackKingPosition[1];
     }
 
-    //checking from King location outward for pins and ckechs, pins get stored
-    int directions[8][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    //checking from King location outward for pins and checks, pins get stored
+    int directions[8][2] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
 
     // Iterate over all possible directions
     for (int i = 0; i < 8; ++i) {
@@ -248,8 +248,7 @@ void checkForPinsAndChecks(const GameState &gamestate){
                     //diagonal single squares: Queen, King, Bishop and Pawn
                     //pawn: 1 Rook: 2 Knight: 3 Bishop: 4 Queen: 5 King: 6
                     int type = getPieceType(gamestate, newX, newY);
-                    //TODO: check if gamestate white turn is correct
-                    if ((0 <= i && i <= 3 && type == 2) || (4 <= i && i <= 7 && type == 4) || (step_gone == 1 && type == 1 && ((!gamestate.m_whitesTurn && 6 <= i && i <= 7) || (gamestate.m_whitesTurn && 4 <= i && i <= 5))) || (type == 5) || (step_gone == 1 && type == 6)) {
+                    if ((0 <= i && i <= 3 && type == Rook) || (4 <= i && i <= 7 && type == Bishop) || (step_gone == 1 && type == Pawn && ((gamestate.m_whitesTurn && 6 <= i && i <= 7) || (!gamestate.m_whitesTurn && 4 <= i && i <= 5))) || (type == Queen) || (step_gone == 1 && type == King)) {
                         //no pin so its check
                         if (PossiblePin.empty()){
                             gamestate.m_inCheck = true;

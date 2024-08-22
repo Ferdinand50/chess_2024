@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-	//FIXME: king moves
+	//FIXME: king can make illegal moves when he is in check
 	//FIXME: searchDepth of 5 ends in checkMate 
 	//FIXME: searchDepth of 4 results in stupid AI behaviour
 	//TODO: implement this file as an app with object orientated programming
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
 	bool gameover = false;
     bool WhiteHuman = true;
-    bool BlackHuman = false;
+    bool BlackHuman = true;
 	int square = screen.SCREEN_WIDTH/8;
 	bool StartMove =true;
 	bool EndMove = false;
