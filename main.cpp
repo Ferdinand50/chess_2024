@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-	//FIXME: searchDepth of 4 results in stupid AI behaviour
+	//FIXME: king can not make all moves
 	//FIXME: there seems to be a bug with stalemate and checkmate
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects

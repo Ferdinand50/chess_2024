@@ -10,7 +10,8 @@ Move AI_Handler::returnBestMove(GameState gamestate, const std::vector<Move> leg
 
 
 float AI_Handler::returnBestMoveMinMax(GameState &gamestate, const std::vector<Move> &legalMoves, int depth) {
-    int turnMultiplier = gamestate.m_whitesTurn ? 1 : -1;
+    //int turnMultiplier = gamestate.m_whitesTurn ? 1 : -1;
+    int turnMultiplier = 1;
     float currentScore;
     float score;
     float maxScore;
