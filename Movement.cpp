@@ -113,7 +113,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
             for (int i = static_cast<int>(theoreticalMoves.size()) - 1; i >= 0; --i){
                 //move doesn't move king so it must block or capture
                 //TODO: check if rank and file is correct x and y
-                if (theoreticalMoves[i].m_pieceMoved != blackKing && theoreticalMoves[i].m_pieceMoved != whiteQueen) {
+                if (theoreticalMoves[i].m_pieceMoved != blackKing && theoreticalMoves[i].m_pieceMoved != whiteKing) {
                     //move doesn't block or capture
                     if (validSquares.find({theoreticalMoves[i].m_end_x, theoreticalMoves[i].m_end_y}) == validSquares.end()) {
                         theoreticalMoves.erase(theoreticalMoves.begin() + i);
