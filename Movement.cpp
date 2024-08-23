@@ -374,7 +374,7 @@ void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
     //check if there is an attack square and if there is an enemy piece on it (left)
     if(!(y== 7 || y==0 || x==0) && gamestate.m_chessBoard[y+direction][x-1] != 0 && !gamestate.isPieceTurn(x-1,y+direction)){
         //check if piece is pinned or can move in pin direction
-        if(!piecePinned || (pinDirection == dr1 || pinDirection == dr2)){
+        if(!piecePinned || (pinDirection == dl1 || pinDirection == dl2)){
             moveCoord.xEnd = x - 1;
             moveCoord.yEnd = y + direction;
             Move move(gamestate, moveCoord);
