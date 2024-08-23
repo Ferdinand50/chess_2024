@@ -53,6 +53,9 @@ void undoMove(GameState &gamestate){
             gamestate.m_blackKingPosition = {move.m_start_y, move.m_start_x};
         }
 
+        gamestate.m_checkmate = false;
+        gamestate.m_stalemate = false;
+
     } else {
         std::cout<<"No move to undo"<<std::endl;
     }
@@ -122,7 +125,6 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
         }
         //double check king has to move
         else
-            //FIXME: fix king moves
             getKingMoves(theoreticalMoves, gamestate, king_x, king_y);
     }
 

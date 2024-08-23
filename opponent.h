@@ -13,7 +13,7 @@ public:
 private:
     //depth of search
     //TODO: use constructor
-    int searchDepth = 3;
+    int searchDepth = 5;
     //weight of position of pieces for evaluation score
     float position_weight = 0.1;
     //score for a checkmate
@@ -175,12 +175,8 @@ private:
 public:
     //constructor
     AI_Handler();
-    //gets best move for AI
-    Move returnBestMove(GameState &gamestate, const std::vector<Move> &legalMoves);
-    //returns the best move of the AI opponent with 1 step look up
-    Move returnOpponentsMove1StepLook(GameState &gamestate, const std::vector<Move> &legalMoves);
-    //returns the best move of the AI opponent with 2 step look up (does only work is black is AI)
-    Move returnOpponentsMove2StepLook(GameState &gamestate, const std::vector<Move> &legalMoves);
+    //gets best move for AI, without using a reference here
+    Move returnBestMove(GameState gamestate, const std::vector<Move> legalMoves);
     //return score, modify bestMoveAI of AI_Handler (uses MinMax algorithm)
     float returnBestMoveMinMax(GameState &gamestate, const std::vector<Move> &legalMoves, int depth);
     //return score of certain board position

@@ -13,8 +13,6 @@
 
 int main(int argc, char *argv[])
 {
-	//FIXME: king can make illegal moves when he is in check
-	//FIXME: searchDepth of 5 ends in checkMate 
 	//FIXME: searchDepth of 4 results in stupid AI behaviour
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects
@@ -39,7 +37,7 @@ int main(int argc, char *argv[])
 
 	bool gameover = false;
     bool WhiteHuman = true;
-    bool BlackHuman = true;
+    bool BlackHuman = false;
 	int square = screen.SCREEN_WIDTH/8;
 	bool StartMove =true;
 	bool EndMove = false;
@@ -149,19 +147,19 @@ int main(int argc, char *argv[])
 				//TODO: move this in screen update
 				//TODO: draw on the screen and remove quit
 				cout<<"Black wins by Checkmate."<<endl;
-				QUIT=true;
+				//QUIT=true;
 			}
             else{
 				//TODO: draw on the screen and remove quit
 				cout<<"White wins by Checkmate."<<endl;
-				QUIT=true;
+				//QUIT=true;
 			}
 
 		} else if (gamestate.m_stalemate){
 			gameover = true;
 			//TODO: draw on the screen and remove quit
 			cout<<"Stalemate."<<endl;
-			QUIT=true;
+			//QUIT=true;
 		}
 		
 		//update screen
