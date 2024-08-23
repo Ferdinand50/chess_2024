@@ -9,9 +9,6 @@
 #include <string.h>
 #include "gamestate.h"
 
-//TODO: remove this namespace
-using namespace std;
-
 //forward declaration
 class GameState;
 

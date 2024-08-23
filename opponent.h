@@ -13,7 +13,7 @@ public:
 private:
     //depth of search
     //TODO: use constructor
-    int searchDepth = 5;
+    int searchDepth = 3;
     //weight of position of pieces for evaluation score
     float position_weight = 0.1;
     //score for a checkmate

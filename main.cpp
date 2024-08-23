@@ -9,16 +9,15 @@
 #include "Movement.h"
 #include "opponent.h"
 
-//TODO: remove using namespace std everywhere
-
 int main(int argc, char *argv[])
 {
 	//FIXME: searchDepth of 4 results in stupid AI behaviour
+	//FIXME: there seems to be a bug with stalemate and checkmate
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects
 	Screen screen;
 	if(screen.init()==false){
-		cout<<"Error initialising SDL."<<endl;
+		LOG("Error initialising SDL.");
 		return 1;
 	}
 
@@ -146,19 +145,19 @@ int main(int argc, char *argv[])
             if(gamestate.m_whitesTurn){
 				//TODO: move this in screen update
 				//TODO: draw on the screen and remove quit
-				cout<<"Black wins by Checkmate."<<endl;
+				LOG("Black wins by Checkmate.");
 				//QUIT=true;
 			}
             else{
 				//TODO: draw on the screen and remove quit
-				cout<<"White wins by Checkmate."<<endl;
+				LOG("White wins by Checkmate.");
 				//QUIT=true;
 			}
 
 		} else if (gamestate.m_stalemate){
 			gameover = true;
 			//TODO: draw on the screen and remove quit
-			cout<<"Stalemate."<<endl;
+			LOG("Stalemate");
 			//QUIT=true;
 		}
 		

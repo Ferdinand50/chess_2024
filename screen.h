@@ -10,9 +10,6 @@
 #include <map>
 
 
-using namespace std;
-
-
 class Screen {
 public:
     const static int SCREEN_WIDTH = 600;
