@@ -111,7 +111,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
                 //move doesn't move king so it must block or capture
                 //TODO: check if rank and file is correct x and y
                 if (theoreticalMoves[i].m_pieceMoved != 16 && theoreticalMoves[i].m_pieceMoved != 26) {
-                    //move doesnt block or capture
+                    //move doesn't block or capture
                     if (validSquares.find({theoreticalMoves[i].m_end_x, theoreticalMoves[i].m_end_y}) == validSquares.end()) {
                         theoreticalMoves.erase(theoreticalMoves.begin() + i);
                     }
@@ -192,7 +192,7 @@ void CheckmateandStalemate(const std::vector<Move> &legalMoves, const GameState 
 }
 
 
-//TODO: this function modifies the gamestate is this okay? (checks, pins, inCheck)
+
 void checkForPinsAndChecks(const GameState &gamestate){
     //clear the pins and checks vector
     gamestate.m_pins.clear();
@@ -229,8 +229,9 @@ void checkForPinsAndChecks(const GameState &gamestate){
         while (newX >= 0 && newX < 8 && newY >= 0 && newY < 8) {
             // Check if the new position has a piece
             if (gamestate.m_chessBoard[newY][newX] != 0) {
-                // If the position is occupied by an alley piece
-                if (gamestate.isPieceTurn(newX, newY)) {
+                // If the position is occupied by a non king alley piece
+                int type = getPieceType(gamestate, newX, newY);
+                if (gamestate.isPieceTurn(newX, newY) && type != King){
                     //only first ally piece can be pinned
                     if (PossiblePin.empty())
                         PossiblePin = {newX, newY, directions[i][0], directions[i][1]};
@@ -554,7 +555,6 @@ void getQueenMoves(std::vector<Move> &legalMoves, const GameState &gamestate, in
 }
 
 
-//FIXME: king makes illegal moves with pawns attacks IMPORTANT
 void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y) {
     // This can be initialized in the getLegalMoves function
     MoveCoord moveCoord;
@@ -649,6 +649,14 @@ bool Move::isLegal(std::vector<Move> const &legalMoves){
     return false;
 }
 
+
+void Move::printMove() const {
+    std::cout << "Piece Moved: " << m_pieceMoved << std::endl;
+    std::cout << "Piece Taken: " << m_pieceTaken << std::endl;
+    std::cout << "Start Position: (" << m_start_x << ", " << m_start_y << ")" << std::endl;
+    std::cout << "End Position: (" << m_end_x << ", " << m_end_y << ")" << std::endl;
+    std::cout << "______________________"<< std::endl;
+}
 
 
 void Move::close(){

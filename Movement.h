@@ -43,6 +43,8 @@ public:
     Move();
     //check if move is in legalMoves
     bool isLegal(std::vector<Move> const &legalMoves);
+    //debug function to print the move
+    void printMove() const; 
     //closes the move
     void close();
 };
