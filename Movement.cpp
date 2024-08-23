@@ -3,7 +3,7 @@
 
 void makeMove(GameState &gamestate, Move move){
     //remove piece of start square
-    gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = 0;
+    gamestate.m_chessBoard[move.m_start_y][move.m_start_x] = EMPTY;
     //move piece to new square
     gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = move.m_pieceMoved;
     //change turn of player
@@ -12,21 +12,21 @@ void makeMove(GameState &gamestate, Move move){
     gamestate.m_moveLog.push(move);
 
     //white pawn promotion
-    if(move.m_pieceMoved == 21 && move.m_end_y == 0)
-        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = 25;
+    if(move.m_pieceMoved == whitePawn && move.m_end_y == 0)
+        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = whiteQueen;
     //black pawn promotion
-    else if(move.m_pieceMoved == 11 && move.m_end_y == 7)
-        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = 15;
+    else if(move.m_pieceMoved == blackPawn && move.m_end_y == 7)
+        gamestate.m_chessBoard[move.m_end_y][move.m_end_x] = blackQueen;
 
     //TODO: castle rights 
 
 
     //update King position
     //white King
-    if(move.m_pieceMoved==26)
+    if(move.m_pieceMoved==whiteKing)
         gamestate.m_whiteKingPosition = {move.m_end_y, move.m_end_x};
     //black King
-    else if(move.m_pieceMoved==16)
+    else if(move.m_pieceMoved==blackKing)
         gamestate.m_blackKingPosition = {move.m_end_y, move.m_end_x};
 }
 
@@ -45,11 +45,11 @@ void undoMove(GameState &gamestate){
 
         // Update King position
         // White King
-        if(move.m_pieceMoved == 26) {
+        if(move.m_pieceMoved == whiteKing) {
             gamestate.m_whiteKingPosition = {move.m_start_y, move.m_start_x};
         }
         // Black King
-        else if(move.m_pieceMoved == 16) {
+        else if(move.m_pieceMoved == blackKing) {
             gamestate.m_blackKingPosition = {move.m_start_y, move.m_start_x};
         }
 
@@ -113,7 +113,7 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
             for (int i = static_cast<int>(theoreticalMoves.size()) - 1; i >= 0; --i){
                 //move doesn't move king so it must block or capture
                 //TODO: check if rank and file is correct x and y
-                if (theoreticalMoves[i].m_pieceMoved != 16 && theoreticalMoves[i].m_pieceMoved != 26) {
+                if (theoreticalMoves[i].m_pieceMoved != blackKing && theoreticalMoves[i].m_pieceMoved != whiteQueen) {
                     //move doesn't block or capture
                     if (validSquares.find({theoreticalMoves[i].m_end_x, theoreticalMoves[i].m_end_y}) == validSquares.end()) {
                         theoreticalMoves.erase(theoreticalMoves.begin() + i);
@@ -150,32 +150,32 @@ void getTheoreticalMoves(std::vector<Move> &theoreticalMoves, const GameState &g
         for (int x = 0; x < 8; ++x){
             //whites turn and piece is white
             if(gamestate.m_chessBoard[y][x]>20 && gamestate.m_whitesTurn){
-                if(gamestate.m_chessBoard[y][x] == 21)
+                if(gamestate.m_chessBoard[y][x] == whitePawn)
                     getPawnMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 22)
+                else if(gamestate.m_chessBoard[y][x] == whiteRook)
                     getRookMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 23)
+                else if(gamestate.m_chessBoard[y][x] == whiteKnight)
                     getKnightMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 24)
+                else if(gamestate.m_chessBoard[y][x] == whiteBishop)
                     getBishopMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 25)
+                else if(gamestate.m_chessBoard[y][x] == whiteQueen)
                     getQueenMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 26)
+                else if(gamestate.m_chessBoard[y][x] == whiteKing)
                     getKingMoves(theoreticalMoves, gamestate, x, y);
                 }
             //blacks turn and piece is black
             else if(gamestate.m_chessBoard[y][x] > 0 && gamestate.m_chessBoard[y][x] < 20 && !gamestate.m_whitesTurn){
-                if(gamestate.m_chessBoard[y][x] == 11)
+                if(gamestate.m_chessBoard[y][x] == blackPawn)
                     getPawnMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 12)
+                else if(gamestate.m_chessBoard[y][x] == blackRook)
                     getRookMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 13)
+                else if(gamestate.m_chessBoard[y][x] == blackKnight)
                     getKnightMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 14)
+                else if(gamestate.m_chessBoard[y][x] == blackBishop)
                     getBishopMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 15)
+                else if(gamestate.m_chessBoard[y][x] == blackQueen)
                     getQueenMoves(theoreticalMoves, gamestate, x, y);
-                else if(gamestate.m_chessBoard[y][x] == 16)
+                else if(gamestate.m_chessBoard[y][x] == blackKing)
                     getKingMoves(theoreticalMoves, gamestate, x, y);
                 }
         }    
