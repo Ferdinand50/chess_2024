@@ -71,5 +71,8 @@
         "xhash": "cpp",
         "stack": "cpp",
         "set": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "enpassant"
+    ]
 }

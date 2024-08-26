@@ -41,8 +41,6 @@ void undoMove(GameState &gamestate){
         //change turn of player
         gamestate.m_whitesTurn = !gamestate.m_whitesTurn;
 
-        //TODO: undo pawn promotion (seems to work without implementation)
-
         // Update King position
         // White King
         if(move.m_pieceMoved == whiteKing) {
@@ -112,7 +110,6 @@ void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoretical
             //backwards iteration
             for (int i = static_cast<int>(theoreticalMoves.size()) - 1; i >= 0; --i){
                 //move doesn't move king so it must block or capture
-                //TODO: check if rank and file is correct x and y
                 if (theoreticalMoves[i].m_pieceMoved != blackKing && theoreticalMoves[i].m_pieceMoved != whiteKing) {
                     //move doesn't block or capture
                     if (validSquares.find({theoreticalMoves[i].m_end_x, theoreticalMoves[i].m_end_y}) == validSquares.end()) {
@@ -297,7 +294,7 @@ int getPieceType(const GameState &gamestate, int x, int y){
     return pieceStr[1] - '0'; // Convert the character to an integer
 }
 
-
+//TODO: implement enpassant
 void getPawnMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int x, int y){
     //check is piece is pinned
     bool piecePinned = false;
@@ -590,7 +587,6 @@ void getKingMoves(std::vector<Move> &legalMoves, const GameState &gamestate, int
                     gamestate.m_blackKingPosition[0] = newY;  //y
                     gamestate.m_blackKingPosition[1] = newX;  //x
                 }
-                //TODO: do I need to change color of player who's turn is it?
                 //check if king is in check
                 checkForPinsAndChecks(gamestate);
                 //not in check so move is valid

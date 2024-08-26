@@ -2,7 +2,6 @@
 #define OPPONENT_H
 
 #include <map>
-
 #include "Movement.h"
 #include "gamestate.h"
 
@@ -37,6 +36,7 @@ private:
         {blackKing, 0}
     };
 
+    //TODO: increase efficiency with 1D arrays
     int blackPawnMap[8][8] = {
         {0, 0, 0, 0, 0, 0, 0, 0},
         {1, 0, 1, 0, 0, 1, 0, 1},
