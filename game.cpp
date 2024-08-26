@@ -39,7 +39,6 @@ void Game::run() {
 void Game::handleEvents() {
     SDL_Event event;
     humanTurn = (gamestate.m_whitesTurn && WhiteHuman) || (!gamestate.m_whitesTurn && BlackHuman);
-    //TODO: does PollEvent work like intended? 
     //RUNS when every event is happening like moving the mouse
     if(SDL_WaitEvent(&event)) {
         switch (event.type) {

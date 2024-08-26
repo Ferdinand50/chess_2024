@@ -60,7 +60,6 @@ bool Screen::init() {
 
 void Screen::renderText(const std::string &message) {
     SDL_Color textColor = {255, 0, 0, 255};
-    //TODO: is this a memory leak?
     SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, message.c_str(), textColor);
     if (textSurface == NULL) {
         LOG("[ERROR]: Unable to render text surface! SDL_ttf Error: " << TTF_GetError());
