@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-	//FIXME: there seems to be a bug with stalemate and checkmate
+	//FIXME: it looks like the AI makes moves which lead to a stalemate even when he is in a favorable position
 	//TODO: implement this file as an app with object orientated programming
 	//TODO: implement sound effects
 	Screen screen;
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 
 	bool gameover = false;
     bool WhiteHuman = true;
-    bool BlackHuman = true;
+    bool BlackHuman = false;
 	int square = screen.SCREEN_WIDTH/8;
 	bool StartMove =true;
 	bool EndMove = false;

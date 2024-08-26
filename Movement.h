@@ -52,8 +52,6 @@ void makeMove(GameState &gamestate, Move move);
 void undoMove(GameState &gamestate);
 //gets the valid moves for the current gamestate
 void getLegalMoves(std::vector<Move> &legalMoves, std::vector<Move> &theoreticalMoves, const GameState &gamestate);
-// //returns the valid moves for the current gamestate (this is less efficient)
-// std::vector<Move> returnLegalMoves(const GameState &gamestate);
 //gets the theoretical moves of each piece
 void getTheoreticalMoves(std::vector<Move> &theoreticalMoves, const GameState &gamestate);
 //get moves of pawns

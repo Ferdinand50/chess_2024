@@ -1,7 +1,8 @@
 #include "opponent.h"
 
-AI_Handler::AI_Handler() {
+AI_Handler::AI_Handler(): searchDepth(4), position_weight(0.1), checkmateScore(1000), stalemateScore(0) {
 }
+
 
 Move AI_Handler::returnBestMove(GameState gamestate, const std::vector<Move> legalMoves){
     float score = returnBestMoveMinMax(gamestate, legalMoves, searchDepth);

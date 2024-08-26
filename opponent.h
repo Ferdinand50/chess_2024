@@ -12,14 +12,13 @@ public:
 
 private:
     //depth of search
-    //TODO: use constructor
-    int searchDepth = 4;
+    int searchDepth;
     //weight of position of pieces for evaluation score
-    float position_weight = 0.1;
+    float position_weight;
     //score for a checkmate
-    int checkmateScore = 1000;
+    int checkmateScore;
     //score for a stalemate
-    int stalemateScore = 0;
+    int stalemateScore;
     //stores best move of AI (used for advanced search algorithms)
     Move bestMoveAI;
     //map to get the score of a piece
