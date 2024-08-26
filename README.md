@@ -5,15 +5,16 @@ Version 1 released
 
 Simple Chess engine with an AI oppent implemented in C++. The opponent uses the MinMax algorithm for choosing the best move. Currently it can look up 4 steps in advance.
 
-![simulation_image](https://github.com/Ferdinand50/dmp_ur5_on_summit_xl_steel/blob/main/images/UR5_on_summit_rows.png)
+![simulation_image](https://github.com/Ferdinand50/chess_2024/blob/main/src/images/board.png)
 
 ## Tested Environment
 - Windows 11 with vscode
+- x86_64-w64-mingw32
 
 ## Requirements
-- SDL2
-- SDL2_Image
-- SDL2_ttf
+- SDL2 (https://github.com/libsdl-org/SDL/releases)
+- SDL2_Image (https://github.com/libsdl-org/SDL_image/releases)
+- SDL2_ttf (https://github.com/libsdl-org/SDL_ttf/releases)
 - SDL2_mixer (https://github.com/libsdl-org/SDL_mixer/releases)
 
 
