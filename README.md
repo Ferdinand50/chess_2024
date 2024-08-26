@@ -11,7 +11,6 @@ Simple Chess engine with an AI oppent implemented in C++. The opponent uses the 
 - Windows 11 with vscode
 
 ## Requirements
-make
 - SDL2
 - SDL2_Image
 - SDL2_ttf
