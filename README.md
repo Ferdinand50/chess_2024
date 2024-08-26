@@ -5,7 +5,7 @@ Version 1 released
 
 Simple Chess engine with an AI oppent implemented in C++. The opponent uses the MinMax algorithm for choosing the best move. Currently it can look up 4 steps in advance.
 
-![simulation_image](https://github.com/Ferdinand50/dmp_ur5_on_summit_xl_steel/blob/main/images/UR5_on_summit_rows.png)
+![simulation_image](https://github.com/Ferdinand50/chess_2024/blob/main/src/images/board.png)
 
 ## Tested Environment
 - Windows 11 with vscode
