@@ -3,6 +3,9 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
+
 #include <unordered_map>
 #include <iostream>
 #include "Movement.h"
@@ -27,6 +30,7 @@ private:
     SDL_Texture* m_boardTexture;
     SDL_Surface* m_images[12];
     SDL_Texture* m_textures[12];
+    TTF_Font* m_font;
     
 
 public:
@@ -48,6 +52,8 @@ public:
     void createTextures();
     //draws the checks and pins on the board
     void drawChecksandPins(const GameState &gamestate);
+    //draws text on the screen
+    void renderText(const std::string &message);
     //frees allocated memory when closing the screen
     void close();
 

@@ -26,10 +26,9 @@ void Game::run() {
                 processAIMove();
             //check if the game is over
             checkGameOver();
-            //LOG(xC<<yC<<EndMove);
             //update screen
-            screen.update(gamestate, legalMoves, xC, yC, EndMove);
-            //screen.update(gamestate, legalMoves, 0, 6, EndMove);
+            if(!gameover)
+                screen.update(gamestate, legalMoves, xC, yC, EndMove);
         }
         //waiting
         SDL_Delay(floor(2.0f));
@@ -137,7 +136,6 @@ void Game::processAIMove(){
         makeMove(gamestate, opponentMove);
         //update legal moves
         getLegalMoves(legalMoves, theoreticalMoves, gamestate);
-        // LOG(handler_AI_moves.returnScore(gamestate));
     } else {
         LOG("AI has no legal move");
     }
@@ -147,20 +145,18 @@ void Game::processAIMove(){
 void Game::checkGameOver(){
     if(gamestate.m_checkmate){
         gameover = true;
+        screen.update(gamestate, legalMoves, xC, yC, EndMove);
         if(gamestate.m_whitesTurn){
-            //TODO: move this in screen update
-            //TODO: draw on the screen and remove quit
-            LOG("Black wins by Checkmate.");
+            screen.renderText("Black wins by Checkmate.");
         }
         else{
-            //TODO: draw on the screen and remove quit
-            LOG("White wins by Checkmate.");
+            screen.renderText("White wins by Checkmate.");
         }
 
     } else if (gamestate.m_stalemate){
         gameover = true;
-        //TODO: draw on the screen and remove quit
-        LOG("Stalemate");
+        screen.update(gamestate, legalMoves, xC, yC, EndMove);
+        screen.renderText("Stalemate");
     }
 }
 

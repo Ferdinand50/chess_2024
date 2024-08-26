@@ -12,6 +12,18 @@ bool Screen::init() {
         return false;
     }
 
+    if (TTF_Init() == -1) {
+        LOG("[ERROR]: SDL_ttf init failed.");
+        return false;
+    }
+
+    //load in font
+    m_font = TTF_OpenFont("src/fonts/LiberationSansBold.ttf", 24); // Adjust the font size as needed
+    if (m_font == NULL) {
+        LOG("[ERROR]: Failed to load font! SDL_ttf Error: " << TTF_GetError());
+        return false;
+    }
+
     m_window = SDL_CreateWindow("Chess",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
         SCREEN_WIDTH, SDL_WINDOW_SHOWN);
@@ -44,6 +56,31 @@ bool Screen::init() {
 
     return true;
 }
+
+
+void Screen::renderText(const std::string &message) {
+    SDL_Color textColor = {255, 0, 0, 255};
+    //TODO: is this a memory leak?
+    SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, message.c_str(), textColor);
+    if (textSurface == NULL) {
+        LOG("[ERROR]: Unable to render text surface! SDL_ttf Error: " << TTF_GetError());
+        return;
+    }
+
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_renderer, textSurface);
+    if (textTexture == NULL) {
+        LOG("[ERROR]: Unable to create texture from rendered text! SDL Error: " << SDL_GetError());
+        SDL_FreeSurface(textSurface);
+        return;
+    }
+
+    SDL_Rect renderQuad = {SCREEN_WIDTH/4, SCREEN_WIDTH/2, textSurface->w, textSurface->h};
+    SDL_RenderCopy(m_renderer, textTexture, NULL, &renderQuad);
+    SDL_FreeSurface(textSurface);
+    SDL_DestroyTexture(textTexture);
+    SDL_RenderPresent(m_renderer);
+}
+
 
 void Screen::precomputeBoard() {
     m_boardTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, SCREEN_WIDTH, SCREEN_WIDTH);
@@ -156,21 +193,26 @@ void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMo
     if(b_drawHighlights)
         drawHighlights(legalMoves, x, y);
 
-    //debug purposes
-    if(true)
-        drawChecksandPins(gamestate);
-
+    drawChecksandPins(gamestate);
     drawPieces(gamestate);
     SDL_RenderPresent(m_renderer);
 }
 
 void Screen::close() {
-    LOG("[LOG]: Closing the screen.");
+    LOG("[LOG]: Closing the game.");
     for (int i = 0; i < 12; i++) {
         if (m_textures[i]) {
             SDL_DestroyTexture(m_textures[i]);
         }
     }
+
+    // Cleanup text font
+    if (m_font) {
+        TTF_CloseFont(m_font);
+        m_font = NULL;
+    }
+
+    TTF_Quit();
     IMG_Quit();
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyTexture(m_texture);

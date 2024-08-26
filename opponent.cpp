@@ -126,13 +126,11 @@ float AI_Handler::returnScore(const GameState &gamestate) {
                 //white pieces have a positive score
                 if (pieceScore>0){
                     whiteScore += pieceScore + positionScore*position_weight;
-                    //whiteScore += pieceScore;
                 }
                 //black pieces have a negative score
                 else{
                     //negative since positionScore is positive
                     blackScore += pieceScore - positionScore*position_weight;
-                    //blackScore += pieceScore;
                 }
             }
         }
