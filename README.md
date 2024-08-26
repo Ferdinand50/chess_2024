@@ -40,6 +40,11 @@ make
 ./main.exe
 ```
 
+press r to reset the game
+
+press z to undo a move
+
+
 ## TODO
 - implement castling
 - implement en passant moves
