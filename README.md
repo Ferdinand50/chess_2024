@@ -12,10 +12,10 @@ Simple Chess engine with an AI oppent implemented in C++. The opponent uses the 
 
 ## Requirements
 make
--SDL2
--SDL2_Image
--SDL2_ttf
--SDL2_mixer (https://github.com/libsdl-org/SDL_mixer/releases)
+- SDL2
+- SDL2_Image
+- SDL2_ttf
+- SDL2_mixer (https://github.com/libsdl-org/SDL_mixer/releases)
 
 
 ## Installation
@@ -41,9 +41,9 @@ make
 ```
 
 ## TODO
--implement castling
--implement en passant moves
--improve efficiency 
+- implement castling
+- implement en passant moves
+- improve efficiency 
 
 
 
