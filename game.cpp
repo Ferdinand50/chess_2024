@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(): gameover(false), WhiteHuman(true), BlackHuman(true), square(screen.SCREEN_WIDTH/8), 
+Game::Game(): gameover(false), WhiteHuman(true), BlackHuman(false), square(screen.SCREEN_WIDTH/8), 
                 StartMove(true), EndMove(false), running(true){
     //init SDL screen
     screen.init();
@@ -110,6 +110,8 @@ void Game::processPlayerMove(){
                 if(move.isLegal(legalMoves)){
                     //make the move
                     makeMove(gamestate, move);
+                    //make sound effect
+                    screen.playMoveSoundEffect(move);
                     //update legal moves
                     getLegalMoves(legalMoves, theoreticalMoves, gamestate);
                 // deselect initial piece and select new one of same color
@@ -133,6 +135,8 @@ void Game::processAIMove(){
     if(legalMoves.size() != 0){
         //make AI move
         makeMove(gamestate, opponentMove);
+        //make sound effect
+        screen.playMoveSoundEffect(opponentMove);
         //update legal moves
         getLegalMoves(legalMoves, theoreticalMoves, gamestate);
     } else {

@@ -15,7 +15,7 @@
 
 
 //FIXME: it looks like the AI makes moves which lead to a stalemate even when he is in a favorable position
-//TODO: implement sound effects
+//FIXME: undoing a move with 0 moves left breaks the game
 class Game {
 public:
     //constructor of game

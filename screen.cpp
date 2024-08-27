@@ -24,6 +24,16 @@ bool Screen::init() {
         return false;
     }
 
+    if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_OGG) != (MIX_INIT_MP3 | MIX_INIT_OGG)) {
+        LOG("[ERROR]: Mix_Init Error: " << Mix_GetError());
+        return false;
+    }
+
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 4096) != 0) {
+        LOG("[ERROR]: Mix_OpenAudio Error: " << Mix_GetError());
+        return false;
+    }
+
     m_window = SDL_CreateWindow("Chess",
         SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
         SCREEN_WIDTH, SDL_WINDOW_SHOWN);
@@ -53,6 +63,7 @@ bool Screen::init() {
     precomputeBoard();
     loadImages();
     createTextures();
+    loadAudio();
 
     return true;
 }
@@ -197,6 +208,28 @@ void Screen::update(const GameState &gamestate, const std::vector<Move> &legalMo
     SDL_RenderPresent(m_renderer);
 }
 
+
+bool Screen::loadAudio() {
+    m_music_move = Mix_LoadMUS("src/sound/move.mp3");
+    m_music_capture = Mix_LoadMUS("src/sound/capture.mp3");
+
+    return true;
+}
+
+//TODO: implement more sound effects such as game end (use audio manager after each turn)
+void Screen::playMoveSoundEffect(const Move &move) {
+    if (Mix_PlayingMusic() == 0) {
+        if(move.m_pieceTaken == EMPTY){
+            Mix_PlayMusic(m_music_move, 1);
+        }
+        else{
+            Mix_PlayMusic(m_music_capture, 1);
+        }
+
+    }
+}
+
+
 void Screen::close() {
     LOG("[LOG]: Closing the game.");
     for (int i = 0; i < 12; i++) {
@@ -211,6 +244,16 @@ void Screen::close() {
         m_font = NULL;
     }
 
+    // Clean up SDL_mixer resources
+    if (m_music_move) {
+        Mix_FreeMusic(m_music_move);
+    }
+    if (m_music_capture) {
+        Mix_FreeMusic(m_music_capture);
+    }
+
+    Mix_CloseAudio();
+    Mix_Quit();
     TTF_Quit();
     IMG_Quit();
     SDL_DestroyRenderer(m_renderer);

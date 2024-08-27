@@ -5,7 +5,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
-
 #include <unordered_map>
 #include <iostream>
 #include "Movement.h"
@@ -31,7 +30,9 @@ private:
     SDL_Surface* m_images[12];
     SDL_Texture* m_textures[12];
     TTF_Font* m_font;
-    
+    Mix_Music* m_music_move; 
+    Mix_Music* m_music_capture; 
+
 
 public:
     Screen();
@@ -54,6 +55,10 @@ public:
     void drawChecksandPins(const GameState &gamestate);
     //draws text on the screen
     void renderText(const std::string &message);
+    //load in audio file
+    bool loadAudio();
+    //play sound effect of move
+    void playMoveSoundEffect(const Move &move);
     //frees allocated memory when closing the screen
     void close();
 
