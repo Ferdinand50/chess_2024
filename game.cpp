@@ -57,7 +57,7 @@ void Game::handleEvents() {
                 if (event.key.keysym.sym == SDLK_z) {
                     LOG("[LOG]: Undoing a move.");
                     undoMove(gamestate);
-                    //if there is an AI player then two moves need to be undo 
+                    //if there is an AI player then two moves need to be undone 
                     if(!(BlackHuman&&WhiteHuman))
                         undoMove(gamestate);
                 //reset game

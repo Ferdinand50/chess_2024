@@ -176,8 +176,8 @@ public:
     AI_Handler();
     //gets best move for AI, without using a reference here
     Move returnBestMove(GameState gamestate, const std::vector<Move> legalMoves);
-    //return score, modify bestMoveAI of AI_Handler (uses MinMax algorithm)
-    float returnBestMoveMinMax(GameState &gamestate, const std::vector<Move> &legalMoves, int depth);
+    //return score, modify bestMoveAI of AI_Handler (uses MinMax algorithm with pruning)
+    float findMoveNegaMaxAlphaBeta(GameState &gamestate, const std::vector<Move> &legalMoves, int depth, float alpha, float beta, int turnMultiplier);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
 };

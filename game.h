@@ -14,8 +14,7 @@
 
 
 
-//FIXME: it looks like the AI makes moves which lead to a stalemate even when he is in a favorable position
-//it has problems finishing the game
+//FIXME: picks stalemate in a winning position
 class Game {
 public:
     //constructor of game
