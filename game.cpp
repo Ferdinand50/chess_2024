@@ -57,6 +57,9 @@ void Game::handleEvents() {
                 if (event.key.keysym.sym == SDLK_z) {
                     LOG("[LOG]: Undoing a move.");
                     undoMove(gamestate);
+                    //if there is an AI player then two moves need to be undo 
+                    if(!(BlackHuman&&WhiteHuman))
+                        undoMove(gamestate);
                 //reset game
                 } else if (event.key.keysym.sym == SDLK_r) {
                     LOG("[LOG]: Resetting the game.");
@@ -73,7 +76,6 @@ void Game::resetGame(){
     gamestate.~GameState(); 
     //place new gamestate object in memory of old object
     new (&gamestate) GameState(); 
-    getLegalMoves(legalMoves, theoreticalMoves, gamestate);
     StartMove = true;
     EndMove = false;
     moveCoord = MoveCoord();
@@ -112,8 +114,6 @@ void Game::processPlayerMove(){
                     makeMove(gamestate, move);
                     //make sound effect
                     screen.playMoveSoundEffect(move);
-                    //update legal moves
-                    getLegalMoves(legalMoves, theoreticalMoves, gamestate);
                 // deselect initial piece and select new one of same color
                 } else if(gamestate.isPieceTurn(xC, yC)){
                     moveCoord.xStart = xC;
@@ -137,8 +137,6 @@ void Game::processAIMove(){
         makeMove(gamestate, opponentMove);
         //make sound effect
         screen.playMoveSoundEffect(opponentMove);
-        //update legal moves
-        getLegalMoves(legalMoves, theoreticalMoves, gamestate);
     } else {
         LOG("AI has no legal move");
     }
@@ -146,6 +144,8 @@ void Game::processAIMove(){
 
 
 void Game::checkGameOver(){
+    //get legal moves for this gamestate
+    getLegalMoves(legalMoves, theoreticalMoves, gamestate);
     if(gamestate.m_checkmate){
         gameover = true;
         screen.update(gamestate, legalMoves, xC, yC, EndMove);
