@@ -70,7 +70,11 @@
         "list": "cpp",
         "xhash": "cpp",
         "stack": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "xthread": "cpp",
+        "thread": "cpp"
     },
     "cSpell.words": [
         "enpassant"

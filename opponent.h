@@ -2,6 +2,8 @@
 #define OPPONENT_H
 
 #include <map>
+#include <thread>  
+#include <chrono> 
 #include "Movement.h"
 #include "gamestate.h"
 
@@ -18,8 +20,12 @@ private:
     int checkmateScore;
     //score for a stalemate
     int stalemateScore;
-    //stores best move of AI (used for advanced search algorithms)
-    Move bestMoveAI;
+    //stores best moves of AI (used for advanced search algorithms) for each thread 
+    Move bestAIMoves[12];
+    //stores the best score of each thread 
+    float scoreForEachThread[12];
+    //amount of threads
+    int numberThreads;
     //map to get the score of a piece
     std::map<int, int> PieceScoreMap = {
         {whitePawn, 1},
@@ -172,18 +178,25 @@ private:
 
 
 public:
-    //constructor
+    //constructor, inits the amount of cpu cores (threads) used for the calculation of the AI move
     AI_Handler();
     //gets best move for AI, without using a reference here
     Move returnBestMove(GameState gamestate, const std::vector<Move> legalMoves);
     //return score, modify bestMoveAI of AI_Handler (uses MinMax algorithm with pruning)
-    float findMoveNegaMaxAlphaBeta(GameState &gamestate, const std::vector<Move> &legalMoves, int depth, float alpha, float beta, int turnMultiplier);
+    float findMoveNegaMaxAlphaBeta(GameState &gamestate, const std::vector<Move> &legalMoves, int depth, float alpha, float beta, int turnMultiplier, int threadIndex);
     //return score of certain board position
     float returnScore(const GameState &gamestate);
 };
 
 
+class Timer {
+public:
+    Timer();
+    ~Timer();
 
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> startTimePoint;
+};
 
 
 #endif // OPPONENT_H
