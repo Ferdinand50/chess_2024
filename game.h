@@ -13,8 +13,6 @@
 #include "opponent.h"
 
 
-
-//FIXME: picks stalemate in a winning position
 class Game {
 public:
     //constructor of game

@@ -5,10 +5,9 @@
 #include <vector>
 #include <iostream>
 #include <stack>
-
 #include "Movement.h"
 
-//TODO: for release change this to 1
+
 #define PR_DEBUG 0
 
 #if PR_DEBUG == 0
@@ -40,7 +39,7 @@
 
 //forward declaration
 class Move;
-
+//FIXME: randomly spawns king after a certain move (rare)
 class GameState 
 {
 private:

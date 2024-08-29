@@ -5,7 +5,6 @@
 #include <vector>
 #include <set>
 #include <utility> 
-
 #include <string.h>
 #include "gamestate.h"
 

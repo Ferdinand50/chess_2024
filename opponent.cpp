@@ -18,7 +18,7 @@ AI_Handler::AI_Handler(): searchDepth(4), position_weight(0.1), checkmateScore(1
 
 Move AI_Handler::returnBestMove(GameState gamestate, const std::vector<Move> legalMoves){
     //TODO: check if threading works as intended
-    Timer timer;
+    //Timer timer;
 
     int turnMultiplier = gamestate.m_whitesTurn ? 1 : -1;
     Move AIMove;
@@ -57,6 +57,7 @@ Move AI_Handler::returnBestMove(GameState gamestate, const std::vector<Move> leg
     for (int i = 0; i < numberThreads; ++i) {
         threads[i].join();
     }
+    //FIXME: It wont choose the best moves with the shortest path to checkmate which can leads to a never ending game
     // get the best move of all threads
     int bestThreadIndex = 0;
     for (int i = 1; i < numberThreads; ++i) {
@@ -64,7 +65,6 @@ Move AI_Handler::returnBestMove(GameState gamestate, const std::vector<Move> leg
             bestThreadIndex = i;  
         }
     }
-    //FIXME: end game best move seems to be to move king which is wrong
     AIMove = bestAIMoves[bestThreadIndex];
 
     numberThreads = tempNumberThreads;
@@ -82,9 +82,8 @@ float AI_Handler::findMoveNegaMaxAlphaBeta(GameState &gamestate, const std::vect
     if (depth == 0) {
         if (gamestate.m_checkmate) {
             currentScore = checkmateScore * turnMultiplier;
-        //FIXME: if enabled AI makes stalemates moves in good positions for itself (but also without)
-        // } else if (gamestate.m_stalemate) {
-        //     currentScore = stalemateScore;
+        } else if (gamestate.m_stalemate) {
+            currentScore = stalemateScore;
         } else {
             currentScore = turnMultiplier * returnScore(gamestate);
         }
